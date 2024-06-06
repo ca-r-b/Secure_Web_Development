@@ -1,1 +1,25 @@
-<!-- Input forms here -->
+<div class="login-title">
+    <h1>Welcome to the ITSECWB System!</h1>
+    <hr/>
+    <% if(msg !== ""){ %>
+        <h4 style="color: rgb(177, 0, 0)"><%= msg %></h4>
+    <% } %>
+</div>
+<div class="login-form">
+    <form action="/login" method="post">
+        <!-- Login Input -->
+        <label for="login-username">Username</label><br/>
+        <input name="username" id="login-username" type="text" placeholder="Enter username" required><br/>
+        <br/>
+        <!-- Password Input -->
+        <label for="login-pass">Password</label><br/>
+        <input name="password" id="login-pass" type="password" placeholder="Enter password" required><br/>
+        <br/>
+        <!-- Submit -->
+        <button type="submit">Log In</button>
+    </form>
+</div>
+<div class="login-rdr">
+    <br/>
+    <p>Don't have an account yet? <a href="/register">Register here!</a></p>
+</div>
