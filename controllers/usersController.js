@@ -12,7 +12,7 @@ const userController = {
                 return res.status(500).send("Database error");
             }
             if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
-                return res.send("Wrong credentials.");
+                return res.render("login", { title: "Login", msg: "Wrong credentials." });
             }
             res.send("Welcome to the page!");
         });
@@ -41,5 +41,3 @@ const userController = {
 };
 
 module.exports = userController;
-
-
