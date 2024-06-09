@@ -23,7 +23,7 @@
         <input name="profilePicture" id="profile-picture" type="file" accept="image/*" required><br/>
         <br/>
         <!-- Submit -->
-        <button type="submit">Register</button>
+        <button id="register-btn" type="submit" disabled>Register</button>
     </form>
 </div>
 <div class="register-rdr">
@@ -32,6 +32,8 @@
 </div>
 
 <script>
+    document.getElementById("first-name").addEventListener("blur", checkFormValidity);
+    document.getElementById("last-name").addEventListener("blur", checkFormValidity);
     document.getElementById("phone").addEventListener("blur", function() {
         var phoneInput = document.getElementById("phone");
         var phoneError = document.getElementById("phone-error");
@@ -40,6 +42,7 @@
         } else {
             phoneError.style.display = "none";
         }
+        checkFormValidity();
     });
 
     document.getElementById("email").addEventListener("blur", function() {
@@ -50,6 +53,7 @@
         } else {
             emailError.style.display = "none";
         }
+        checkFormValidity();
     });
 
     function validateEmail(email) {
@@ -60,5 +64,17 @@
     function validatePhoneNumber(phone) {
         var re = /^09\d{9}$/;
         return re.test(phone);
+    }
+
+    function checkFormValidity() {
+        var firstName = document.getElementById("first-name").value;
+        var lastName = document.getElementById("last-name").value;
+        var emailError = document.getElementById("email-error").style.display;
+        var phoneError = document.getElementById("phone-error").style.display;
+        if (firstName !== "" && lastName !== "" && emailError === "none" && phoneError === "none") {
+            document.getElementById("register-btn").disabled = false;
+        } else {
+            document.getElementById("register-btn").disabled = true;
+        }
     }
 </script>
