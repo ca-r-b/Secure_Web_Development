@@ -1,0 +1,59 @@
+<div class="register-form">
+    <form action="/register" method="post" enctype="multipart/form-data">
+        <!-- First Name Input -->
+        <label for="first-name">First Name</label><br/>
+        <input name="firstName" id="first-name" type="text" placeholder="Enter first name" required><br/>
+        <br/>
+        <!-- Last Name Input -->
+        <label for="last-name">Last Name</label><br/>
+        <input name="lastName" id="last-name" type="text" placeholder="Enter last name" required><br/>
+        <br/>
+        <!-- Email Input -->
+        <label for="email">Email</label><br/>
+        <input name="email" id="email" type="email" placeholder="Enter email" required><br/>
+        <span id="email-error" style="color: red; display: none;">Please enter a valid email address</span>
+        <br/>
+        <!-- Phone Number Input -->
+        <label for="phone">Phone Number</label><br/>
+        <input name="phone" id="phone" type="text" placeholder="Enter phone number" required><br/>
+        <span id="phone-error" style="color: red; display: none;">Please enter a valid PH cellphone number (09*********)</span>
+        <br/>
+        <!-- Profile Picture Input -->
+        <label for="profile-picture">Profile Picture</label><br/>
+        <input name="profilePicture" id="profile-picture" type="file" accept="image/*" required><br/>
+        <br/>
+        <!-- Submit -->
+        <button type="submit">Register</button>
+    </form>
+</div>
+<div class="register-rdr">
+    <br/>
+    <p>Already have an account? <a href="http://localhost:3000">Log in here!</a></p>
+</div>
+
+<script>
+    document.getElementById("phone").addEventListener("blur", function() {
+        var phoneInput = document.getElementById("phone");
+        var phoneError = document.getElementById("phone-error");
+        if (phoneInput.value.length !== 11) {
+            phoneError.style.display = "block";
+        } else {
+            phoneError.style.display = "none";
+        }
+    });
+
+    document.getElementById("email").addEventListener("blur", function() {
+        var emailInput = document.getElementById("email");
+        var emailError = document.getElementById("email-error");
+        if (!validateEmail(emailInput.value)) {
+            emailError.style.display = "block";
+        } else {
+            emailError.style.display = "none";
+        }
+    });
+
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+</script>

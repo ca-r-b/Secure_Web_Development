@@ -44,3 +44,7 @@ app.listen(3000, function(){
 
 // Routes
 app.use("/", authRouter);
+
+app.get("/register", function(req, res){ // Register Page
+    res.render("register", { title: "Register", msg: "" });
+});
