@@ -20,7 +20,8 @@
         <br/>
         <!-- Profile Picture Input -->
         <label for="profile-picture">Profile Picture</label><br/>
-        <input name="profilePicture" id="profile-picture" type="file" accept="image/*" required><br/>
+        <input name="profilePicture" id="profile-picture" type="file" accept=".jpg, .jpeg, .png" required><br/>
+        <span id="picture-error" style="color: red; display: none;">Please upload a valid image file (JPEG, PNG)</span>
         <br/>
         <!-- Submit -->
         <button id="register-btn" type="submit" disabled>Register</button>
@@ -56,6 +57,19 @@
         checkFormValidity();
     });
 
+    document.getElementById("profile-picture").addEventListener("change", function() {
+        var pictureInput = document.getElementById("profile-picture");
+        var pictureError = document.getElementById("picture-error");
+        var fileName = pictureInput.value;
+        var ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+        if (["jpg", "jpeg", "png"].indexOf(ext) === -1) {
+            pictureError.style.display = "block";
+        } else {
+            pictureError.style.display = "none";
+        }
+        checkFormValidity();
+    });
+
     function validateEmail(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
@@ -71,7 +85,8 @@
         var lastName = document.getElementById("last-name").value;
         var emailError = document.getElementById("email-error").style.display;
         var phoneError = document.getElementById("phone-error").style.display;
-        if (firstName !== "" && lastName !== "" && emailError === "none" && phoneError === "none") {
+        var pictureError = document.getElementById("picture-error").style.display;
+        if (firstName !== "" && lastName !== "" && emailError === "none" && phoneError === "none" && pictureError === "none") {
             document.getElementById("register-btn").disabled = false;
         } else {
             document.getElementById("register-btn").disabled = true;
