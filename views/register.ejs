@@ -1,3 +1,8 @@
+<div class="register-title">
+    <h1>ITSECWB System Registration</h1>
+    <p>Please fill out the form below to create your account.</p>
+    <hr/>
+</div>
 <div class="register-form">
     <form action="/register" method="post" enctype="multipart/form-data">
         <!-- First Name Input -->
@@ -62,7 +67,7 @@
         var pictureError = document.getElementById("picture-error");
         var fileName = pictureInput.value;
         var ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
-        if (["jpg", "jpeg", "png"].indexOf(ext) === -1) {
+        if (!validateFileExtension(ext)) {
             pictureError.style.display = "block";
         } else {
             pictureError.style.display = "none";
@@ -78,6 +83,11 @@
     function validatePhoneNumber(phone) {
         var re = /^09\d{9}$/;
         return re.test(phone);
+    }
+
+    function validateFileExtension(extension) {
+        var re = /\.(jpg|jpeg|png)$/i;
+        return re.test(extension);
     }
 
     function checkFormValidity() {
