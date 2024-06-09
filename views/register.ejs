@@ -16,7 +16,7 @@
         <!-- Phone Number Input -->
         <label for="phone">Phone Number</label><br/>
         <input name="phone" id="phone" type="text" placeholder="Enter phone number" required><br/>
-        <span id="phone-error" style="color: red; display: none;">Please enter a valid PH cellphone number (09*********)</span>
+        <span id="phone-error" style="color: red; display: none;">Enter a valid PH cellphone number (09*********)</span>
         <br/>
         <!-- Profile Picture Input -->
         <label for="profile-picture">Profile Picture</label><br/>
@@ -35,7 +35,7 @@
     document.getElementById("phone").addEventListener("blur", function() {
         var phoneInput = document.getElementById("phone");
         var phoneError = document.getElementById("phone-error");
-        if (phoneInput.value.length !== 11) {
+        if (!validatePhoneNumber(phoneInput.value)) {
             phoneError.style.display = "block";
         } else {
             phoneError.style.display = "none";
@@ -55,5 +55,10 @@
     function validateEmail(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
+    }
+
+    function validatePhoneNumber(phone) {
+        var re = /^09\d{9}$/;
+        return re.test(phone);
     }
 </script>
