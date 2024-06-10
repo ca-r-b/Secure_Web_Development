@@ -20,7 +20,19 @@ const User = {
             }
             callback(null, results);
         });
+    },
+
+    getHighestIdPlusOne: async () => {
+        try {
+            const [rows] = await db.promise().query('SELECT IFNULL(MAX(id), 0) AS maxId FROM users');
+            const highestId = rows[0].maxId || 0; // If there are no rows, highestId is 0
+            return highestId + 1;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching highest ID');
+        }
     }
+
 };
 
 module.exports = User;
