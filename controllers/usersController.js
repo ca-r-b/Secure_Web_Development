@@ -47,7 +47,7 @@ const userController = {
 
 
 
-            const userData = { 
+            const userData = {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -61,7 +61,7 @@ const userController = {
 
             User.create(userData, (err, results) => {
                 if (err) {
-                    return res.status(500).send("Database error");
+                    return res.status(500).send("Database errorRRRRRRRR");
                 }
                 res.redirect('/');
             });
