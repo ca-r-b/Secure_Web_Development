@@ -25,11 +25,11 @@ const userController = {
     postRegister: (req, res) => {
         // TODO - Add fullName
         // TODO - Add filePath
-        const { email, pass } = req.body;
+        const { email, password1 } = req.body;
         const salt = 10;
-        const hash = bcrypt.hashSync(pass, salt);
+        const hash = bcrypt.hashSync(password1, salt);
 
-        const userData = { email, password: hash };
+        const userData = { email, password1: hash };
 
         User.create(userData, (err, results) => {
             if (err) {
