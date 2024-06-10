@@ -3,7 +3,7 @@ const User = require('../models/User');
 const path = require('path');
 const db = require('../db');
 
-const userController = {
+const authController = {
     
     getLogin: (req, res) => {
         res.render("login", { title: "Login", msg: "" });
@@ -18,7 +18,7 @@ const userController = {
             if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
                 return res.render("login", { title: "Login", msg: "Wrong credentials."});
             }
-            res.send("Welcome to the page!", { user: user});
+            res.redirect('/home');
         });
     },
 
@@ -87,4 +87,4 @@ const userController = {
     },
 };
 
-module.exports = userController;
+module.exports = authController;

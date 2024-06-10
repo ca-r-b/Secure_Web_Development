@@ -33,11 +33,11 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Route setup
-const authRouter = require("./routes/auth.js");
+const authRouter = require("./routes/route.js");
 app.use("/", authRouter);
 
 // Apply rate limiter to login route
-app.post("/login", loginLimiter, (req, res) => {
+app.post("/", loginLimiter, (req, res) => {
     const { email, pass } = req.body;
 
     // Find user by email
@@ -48,7 +48,7 @@ app.post("/login", loginLimiter, (req, res) => {
         if (results.length === 0 || !bcrypt.compareSync(pass, results[0].password)) {
             return res.render("login", { title: "Login", msg: "Wrong credentials." });
         }
-        res.send("Welcome to the page!");
+        res.redirect('/home');
     });
 });
 
