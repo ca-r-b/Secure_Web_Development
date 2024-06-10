@@ -28,6 +28,23 @@
         <input name="profilePicture" id="profile-picture" type="file" accept=".jpg, .jpeg, .png" required><br/>
         <span id="picture-error" style="color: red; display: none;">Please upload a valid image file (JPEG, PNG)</span>
         <br/>
+        <p>
+            Password Creation Guidelines: </br>
+            - at least 12 characters and 64 characters at most</br>
+            - at least 1 upper case character</br>
+            - at least 1 lower case character</br>
+            - at least 1 digit</br>
+            - at least 1 special character</br>
+        </p>
+        <!-- Passwords -->
+        <label for="password1">Password</label><br/>
+        <input name="password1" id="password1" type="password" placeholder="**********" required><br/>
+        <span id="password1-error" style="color: red; display: none;">Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character</span>
+        <br/>
+        <label for="password2">Confirm Password</label><br/>
+        <input name="password2" id="password2" type="password" placeholder="**********" required><br/>
+        <span id="password2-error" style="color: red; display: none;">Passwords do not match</span>
+        <br/>
         <!-- Submit -->
         <button id="register-btn" type="submit" disabled>Register</button>
     </form>
@@ -40,13 +57,15 @@
 <script>
     document.getElementById("first-name").addEventListener("blur", checkFormValidity);
     document.getElementById("last-name").addEventListener("blur", checkFormValidity);
+
     document.getElementById("phone").addEventListener("blur", function() {
         var phoneInput = document.getElementById("phone");
         var phoneError = document.getElementById("phone-error");
-        if (!validatePhoneNumber(phoneInput.value)) {
-            phoneError.style.display = "block";
-        } else {
+
+        if (validatePhoneNumber(phoneInput.value)) {
             phoneError.style.display = "none";
+        } else {
+            phoneError.style.display = "block";
         }
         checkFormValidity();
     });
@@ -54,10 +73,11 @@
     document.getElementById("email").addEventListener("blur", function() {
         var emailInput = document.getElementById("email");
         var emailError = document.getElementById("email-error");
-        if (!validateEmail(emailInput.value)) {
-            emailError.style.display = "block";
-        } else {
+
+        if (validateEmail(emailInput.value)) {
             emailError.style.display = "none";
+        } else {
+            emailError.style.display = "block";
         }
         checkFormValidity();
     });
@@ -67,12 +87,21 @@
         var pictureError = document.getElementById("picture-error");
         var fileName = pictureInput.value;
         var ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
-        if (!validateFileExtension(ext)) {
-            pictureError.style.display = "block";
-        } else {
+
+        if (validateFileExtension(ext)) {
             pictureError.style.display = "none";
+        } else {
+            pictureError.style.display = "block";
         }
         checkFormValidity();
+    });
+
+    document.getElementById("password1").addEventListener("change", function() {
+        validatePasswords();
+    });
+
+    document.getElementById("password2").addEventListener("change", function() {
+        validatePasswords();
     });
 
     function validateEmail(email) {
@@ -85,18 +114,64 @@
         return re.test(phone);
     }
 
-    function validateFileExtension(extension) {
-        var re = /\.(jpg|jpeg|png)$/i;
-        return re.test(extension);
+    function validateFileExtension(fileName) {
+        var re = /^(jpg|jpeg|png)$/i;
+        return re.test(fileName);
+    }
+
+    function validatePassword(password) {
+        // - Minimum 8 characters
+        // - One uppercase letter
+        // - One lowercase letter
+        // - One number and one special character
+        var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[^ ]{12,64}$/;
+        return re.test(password);
+    }
+
+    function validatePasswords() {
+        var pw1Input = document.getElementById("password1");
+        var pw2Input = document.getElementById("password2");
+        var password1Error = document.getElementById("password1-error");
+        var password2Error = document.getElementById("password2-error");
+
+        if (validatePassword(pw1Input.value)) {
+            password1Error.style.display = "none";
+            if (pw1Input.value === pw2Input.value) {
+                password2Error.style.display = "none";
+            } else {
+                password2Error.style.display = "block";
+            }
+        } else {
+            password1Error.style.display = "block";
+        }
+        checkFormValidity();
     }
 
     function checkFormValidity() {
         var firstName = document.getElementById("first-name").value;
         var lastName = document.getElementById("last-name").value;
+        
+        var emailInput = document.getElementById("email").value;
         var emailError = document.getElementById("email-error").style.display;
+
+        var phoneInput = document.getElementById("phone").value;
         var phoneError = document.getElementById("phone-error").style.display;
+
+        var pictureInput = document.getElementById("profile-picture").value;
         var pictureError = document.getElementById("picture-error").style.display;
-        if (firstName !== "" && lastName !== "" && emailError === "none" && phoneError === "none" && pictureError === "none") {
+
+        var pw1Input = document.getElementById("password1").value;
+        var pw2Input = document.getElementById("password2").value;
+        var password1Error = document.getElementById("password1-error").style.display;
+        var password2Error = document.getElementById("password2-error").style.display;
+        
+        if (    firstName !== "" && 
+                lastName !== "" && 
+                (emailInput !== "" && emailError === "none") && 
+                (phoneInput !== "" && phoneError === "none") &&
+                (pictureInput !== "" && pictureError === "none") &&
+                (pw1Input !== "" && pw2Input !== "" && password1Error === "none" && password2Error === "none")
+            ) {
             document.getElementById("register-btn").disabled = false;
         } else {
             document.getElementById("register-btn").disabled = true;
