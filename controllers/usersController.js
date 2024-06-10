@@ -22,22 +22,53 @@ const userController = {
         res.render("register", { title: "Register", msg: "" });
     },
 
-    postRegister: (req, res) => {
-        // TODO - Add fullName
-        // TODO - Add filePath
-        const { email, password1 } = req.body;
-        const salt = 10;
-        const hash = bcrypt.hashSync(password1, salt);
+    
+    postRegister: async (req, res) => {
+        try {
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const email = req.body.email;
+            const password1 = req.body.password1;
+            const phone = req.body.phone;
+            // const profilePicture = req.body.profilePicture;
+            
+            const saltRounds = 10;
+            const hash = await bcrypt.hash(password1, saltRounds);
 
-        const userData = { email, password1: hash };
 
-        User.create(userData, (err, results) => {
-            if (err) {
-                return res.status(500).send("Database error");
-            }
-            res.redirect('/');
-        });
-    }
+
+            console.log("INFO");
+            console.log(firstName);
+            console.log(lastName);
+            console.log(email);
+            console.log(password1);
+            console.log(phone);
+            // console.log(profilePicture);
+
+
+
+            const userData = { 
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hash,
+                phoneNum: phone,
+                picPath: "/test", // temporary, set default value
+                userType: "student" // temporary, set default value
+            };
+
+            console.log(userData);
+
+            User.create(userData, (err, results) => {
+                if (err) {
+                    return res.status(500).send("Database error");
+                }
+                res.redirect('/');
+            });
+        } catch (err) {
+            res.status(500).send("Server error");
+        }
+    },
 };
 
 module.exports = userController;

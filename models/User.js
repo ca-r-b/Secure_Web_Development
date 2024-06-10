@@ -5,9 +5,9 @@ const User = {
         const sql = "SELECT * FROM users WHERE email = ?";
         db.query(sql, [email], (err, results) => {
             if (err) {
-                return callback(err, null); // If there's an error, call the callback with the error
+                return callback(err, null);
             }
-            callback(null, results[0]); // If successful, call the callback with the result
+            callback(null, results[0]);
         });
     },
 
@@ -15,9 +15,9 @@ const User = {
         const sql = "INSERT INTO users SET ?";
         db.query(sql, userData, (err, results) => {
             if (err) {
-                return callback(err, null); // If there's an error, call the callback with the error
+                return callback(err, null);
             }
-            callback(null, results); // If successful, call the callback with the result
+            callback(null, results);
         });
     }
 };
