@@ -31,7 +31,7 @@ CREATE TABLE `users` (
   `email` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
   `phoneNum` varchar(45) NOT NULL,
-  `picPath` varchar(45) NOT NULL,
+  `picPath` varchar(255) NOT NULL,
   `userType` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
