@@ -1,25 +1,24 @@
 require('dotenv').config();
-
-const mysql = require("mysql2");
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
-const session = require('express-session');
-const path = require('path');
 const rateLimit = require('express-rate-limit');
-const app = express();
 const helmet = require('helmet');
 const cors = require('cors');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const db = require('./db'); // Import the database connection
 
-app.set("view engine", "ejs");
+const app = express();
+const port = 3000;
 
 // Use Helmet to set various HTTP headers for security
 app.use(helmet());
 
 // Enable CORS for all routes (for development)
 const corsOptions = {
-    origin: 'http://localhost:3000', // Allow requests from this origin
+    origin: 'http://localhost:3000',
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -39,6 +38,7 @@ const loginLimiter = rateLimit({
 });
 
 // For Views
+app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set('layout', './layouts/main');
 app.use(express.static("public"));
@@ -48,17 +48,20 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Session setup
+const sessionStore = new MySQLStore({}, db);
 app.use(session({
-    secret: process.env.SECRET_KEY,
+    key: 'session_cookie_name',
+    secret: process.env.SESSION_SECRET,
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { secure: false } // Set to true if using https
 }));
 
 // Route setup
-const authRouter = require("./routes/route.js");
-app.use("/", authRouter);
+const router = require("./routes/route.js");
+app.use("/", router);
 
-app.listen(3000, function() {
-    console.log("Server is running.");
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });

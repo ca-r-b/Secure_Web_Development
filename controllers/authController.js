@@ -1,12 +1,11 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const path = require('path');
-const db = require('../db');
 const loginLimiter = require('../middleware/loginLimiter'); // Import the rate limiter
 
 const authController = {
     getLogin: (req, res) => {
-        res.render("login", { title: "Login", msg: "" });
+        res.render("login", { title: "Login", msg: "" ,});
     },
 
     postLogin: [loginLimiter, (req, res) => { // Apply the rate limiter here
@@ -18,6 +17,8 @@ const authController = {
             if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
                 return res.render("login", { title: "Login", msg: "Wrong credentials." });
             }
+            
+            req.session.user = user;
             res.redirect('/home');
         });
     }],
@@ -45,7 +46,7 @@ const authController = {
                 }
             });
 
-            const imgPath = '/images/dp/' + nextId + "_dp." + extension;
+            const imgPath = 'images/' + nextId + "_dp." + extension;
             const userData = {
                 firstName,
                 lastName,
