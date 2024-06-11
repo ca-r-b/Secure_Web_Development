@@ -31,8 +31,18 @@ const User = {
             console.error(error);
             throw new Error('Error fetching highest ID');
         }
-    }
+    },
 
+    checkForDuplicates: (email, phone, callback) => {
+        const sql = "SELECT * FROM users WHERE email = ? OR phoneNum = ?";
+        db.query(sql, [email, phone], (err, results) => {
+            if (err) {
+                return callback(err, null);
+            }
+            callback(null, results);
+        });
+    },
+    
 };
 
 module.exports = User;

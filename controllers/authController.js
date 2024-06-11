@@ -32,38 +32,58 @@ const authController = {
             const { firstName, lastName, email, password1, phone } = req.body;
             const profilePicture = req.files.profilePicture;
 
-            const saltRounds = 10;
-            const hash = await bcrypt.hash(password1, saltRounds);
-
-            var extension = profilePicture.name.split('.').pop().toUpperCase();
-            const nextId = await User.getHighestIdPlusOne();
-
-            profilePicture.mv(path.resolve('public/images/', nextId + "_dp." + extension), function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("Successful profile image upload!");
-                }
-            });
-
-            const imgPath = 'images/' + nextId + "_dp." + extension;
-            const userData = {
-                firstName,
-                lastName,
-                email,
-                password: hash,
-                phoneNum: phone,
-                picPath: imgPath,
-                userType: "student" // temporary, set default value
-            };
-
-            User.create(userData, (err, results) => {
+           User.checkForDuplicates(email, phone, async (err, user) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Database error");
                 }
-                res.redirect('/');
+
+                console.log(user);
+                
+                if (user.length === 0) {
+                    console.log("valid, no duplicate");
+                                        
+                    const saltRounds = 10;
+                    const hash = await bcrypt.hash(password1, saltRounds);
+
+                    var extension = profilePicture.name.split('.').pop().toUpperCase();
+                    const nextId = await User.getHighestIdPlusOne();
+
+                    profilePicture.mv(path.resolve('public/images/', nextId + "_dp." + extension), function(err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Successful profile image upload!");
+                        }
+                    });
+
+                    const imgPath = 'images/' + nextId + "_dp." + extension;
+                    const userData = {
+                        firstName,
+                        lastName,
+                        email,
+                        password: hash,
+                        phoneNum: phone,
+                        picPath: imgPath,
+                        userType: "student" // temporary, set default value
+                    };
+
+                    User.create(userData, (err, results) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send("Database error");
+                        }
+                        res.redirect('/');
+                    });
+
+                } else{
+                    console.log("invalid, has duplicate");
+                    res.render("register", { title: "Register", msg: "Invalid Credentials" });
+                }
+            
             });
+
+
         } catch (err) {
             console.log(err);
             res.status(500).send("Server error");
