@@ -13,17 +13,17 @@
     <div class="login-title">
         <h1>Welcome to the ITSECWB System!</h1>
         <hr/>
-        <% if(msg !== ""){ %>
+        <% if (msg !== "") { %>
             <h4 style="color: rgb(177, 0, 0)">
                 <%= msg %>
             </h4>
             <% } %>
     </div>
     <div class="login-form">
-        <form action="/" method="post">
+        <form action="/login" method="post">
             <!-- Login Input -->
-            <label for="login-email">Email</label><br/>
-            <input name="email" id="login-email" type="text" placeholder="Enter email" required><br/>
+            <label for="login-username">Email</label><br/>
+            <input name="email" id="login-username" type="text" placeholder="Enter email" required><br/>
             <br/>
             <!-- Password Input -->
             <label for="login-pass">Password</label><br/>
