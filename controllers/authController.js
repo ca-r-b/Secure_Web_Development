@@ -5,7 +5,7 @@ const loginLimiter = require('../middleware/loginLimiter'); // Import the rate l
 
 const authController = {
     getLogin: (req, res) => {
-        res.render("login", { title: "Login", msg: "" ,});
+        res.render("login", { title: "Login", msg: "", });
     },
 
     postLogin: [loginLimiter, (req, res) => { // Apply the rate limiter here
@@ -17,9 +17,16 @@ const authController = {
             if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
                 return res.render("login", { title: "Login", msg: "Wrong credentials." });
             }
-            
-            req.session.user = user;
-            res.redirect('/home');
+
+            req.session.user = user; // Store user information in the session
+
+            if (user.userType === 'admin') {
+                res.redirect('/admin_home'); // Redirect admin users to the admin page
+            } else if (user.userType === 'student') {
+                res.redirect('/home'); // Redirect student users to the student page
+            } else {
+                res.status(403).send("Forbidden"); // Handle unexpected user types
+            }
         });
     }],
 
@@ -32,17 +39,13 @@ const authController = {
             const { firstName, lastName, email, password1, phone } = req.body;
             const profilePicture = req.files.profilePicture;
 
-           User.checkForDuplicates(email, phone, async (err, user) => {
+            User.checkForDuplicates(email, phone, async(err, user) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Database error");
                 }
 
-                console.log(user);
-                
                 if (user.length === 0) {
-                    console.log("valid, no duplicate");
-                                        
                     const saltRounds = 10;
                     const hash = await bcrypt.hash(password1, saltRounds);
 
@@ -76,13 +79,11 @@ const authController = {
                         res.redirect('/');
                     });
 
-                } else{
-                    console.log("invalid, has duplicate");
+                } else {
                     res.render("register", { title: "Register", msg: "Invalid Credentials" });
                 }
-            
-            });
 
+            });
 
         } catch (err) {
             console.log(err);
