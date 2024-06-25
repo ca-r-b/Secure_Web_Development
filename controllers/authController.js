@@ -5,7 +5,16 @@ const loginLimiter = require('../middleware/loginLimiter'); // Import the rate l
 
 const authController = {
     getLogin: (req, res) => {
-        res.render("login", { title: "Login", msg: "", });
+        if(!req.session.isLoggedIn){
+            res.render("login", {title: "Login", msg: ""});
+        }else{
+            if(req.session.user.userType === "admin") {
+                res.redirect("/admin_home");
+            } else if(req.session.user.userType === "student") {
+                res.redirect("/home");
+            } 
+            res.redirect("/home");
+        }
     },
 
     postLogin: [loginLimiter, (req, res) => { // Apply the rate limiter here
@@ -21,8 +30,10 @@ const authController = {
             req.session.user = user; // Store user information in the session
 
             if (user.userType === 'admin') {
+                req.session.isLoggedIn = true;
                 res.redirect('/admin_home'); // Redirect admin users to the admin page
             } else if (user.userType === 'student') {
+                req.session.isLoggedIn = true;
                 res.redirect('/home'); // Redirect student users to the student page
             } else {
                 res.status(403).send("Forbidden"); // Handle unexpected user types
@@ -47,7 +58,7 @@ const authController = {
 
                 if (user.length === 0) {
                     const saltRounds = 10;
-                    const hash = await bcrypt.hash(password1, saltRounds);
+                    const hash = await bcrypt.hash(password1, saltRounds); // TODO - 10 Default
 
                     var extension = profilePicture.name.split('.').pop().toUpperCase();
                     const nextId = await User.getHighestIdPlusOne();

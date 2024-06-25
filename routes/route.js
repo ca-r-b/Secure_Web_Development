@@ -13,4 +13,8 @@ router.post('/register', authController.postRegister);
 // Home route
 router.get("/home", homeController.getHome);
 router.get("/admin_home", adminhomeController.getAdminHome);
+
+// Logout route
+router.get("/logout", homeController.getLogout);
+
 module.exports = router;

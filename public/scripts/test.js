@@ -49,7 +49,7 @@ document.getElementById("password2").addEventListener("change", function() {
 });
 
 function validateEmail(email) {
-    var re = /\S+@\S+\.\S+/;
+    var re = /\S+@\S+\.\S+/; // TODO: Character limit for email; 255 for octet parts; certain special characters sa start
     return re.test(email);
 }
 
@@ -59,7 +59,7 @@ function validatePhoneNumber(phone) {
 }
 
 function validateFileExtension(fileName) {
-    var re = /^(jpg|jpeg|png)$/i;
+    var re = /^(jpg|jpeg|png)$/i; // TODO: Magic Number - hex/ check for file header
     return re.test(fileName);
 }
 
