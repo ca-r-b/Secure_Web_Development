@@ -26,13 +26,11 @@ document.getElementById("email").addEventListener("blur", function() {
     checkFormValidity();
 });
 
-document.getElementById("profile-picture").addEventListener("change", function() {
+document.getElementById("profile-picture").addEventListener("change", async function() {
     var pictureInput = document.getElementById("profile-picture");
     var pictureError = document.getElementById("picture-error");
-    var fileName = pictureInput.value;
-    var ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
 
-    if (validateFileExtension(ext)) {
+    if (await validateFile(pictureInput)) {
         pictureError.style.display = "none";
     } else {
         pictureError.style.display = "block";
@@ -58,9 +56,36 @@ function validatePhoneNumber(phone) {
     return re.test(phone);
 }
 
-function validateFileExtension(fileName) {
-    var re = /^(jpg|jpeg|png)$/i; // TODO: Magic Number - hex/ check for file header
-    return re.test(fileName);
+async function validateFile(file){
+    
+    const fileSignature = (buffer) => {
+        const header = buffer.slice(0, 4).toString('hex').toUpperCase();
+        switch (header) {
+            case "89504E47":
+                return "image/png";
+            case "FFD8FFE0":
+            case "FFD8FFE1":
+            case "FFD8FFE2":
+            case "FFD8FFE3":
+            case "FFD8FFE8":
+                return "image/jpeg";
+            default:
+                return "unknown";
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = function(e) {
+            const buffer = new Uint8Array(e.target.result);
+            const fileType = fileSignature(buffer);
+            resolve(fileType !== "unknown");
+        };
+        reader.onerror = function() {
+            reject(new Error("File read error"));
+        };
+        reader.readAsArrayBuffer(file.slice(0, 4));
+    });
 }
 
 function validatePassword(password) {

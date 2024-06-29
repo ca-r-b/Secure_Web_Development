@@ -5,15 +5,16 @@ const loginLimiter = require('../middleware/loginLimiter'); // Import the rate l
 
 const authController = {
     getLogin: (req, res) => {
-        if(!req.session.isLoggedIn){
-            res.render("login", {title: "Login", msg: ""});
-        }else{
-            if(req.session.user.userType === "admin") {
+        if (!req.session.isLoggedIn) {
+            res.render("login", { title: "Login", msg: "" });
+        } else {
+            if (req.session.user.userType === "admin") {
                 res.redirect("/admin_home");
-            } else if(req.session.user.userType === "student") {
+            } else if (req.session.user.userType === "student") {
                 res.redirect("/home");
-            } 
-            res.redirect("/home");
+            } else {
+                res.redirect("/home");
+            }
         }
     },
 
@@ -45,12 +46,12 @@ const authController = {
         res.render("register", { title: "Register", msg: "" });
     },
 
-    postRegister: async(req, res) => {
+    postRegister: async (req, res) => {
         try {
             const { firstName, lastName, email, password1, phone } = req.body;
             const profilePicture = req.files.profilePicture;
 
-            User.checkForDuplicates(email, phone, async(err, user) => {
+            User.checkForDuplicates(email, phone, async (err, user) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Database error");
@@ -58,18 +59,10 @@ const authController = {
 
                 if (user.length === 0) {
                     const saltRounds = 10;
-                    const hash = await bcrypt.hash(password1, saltRounds); // TODO - 10 Default
+                    const hash = await bcrypt.hash(password1, saltRounds);
 
-                    var extension = profilePicture.name.split('.').pop().toUpperCase();
+                    const extension = profilePicture.name.split('.').pop().toUpperCase();
                     const nextId = await User.getHighestIdPlusOne();
-
-                    profilePicture.mv(path.resolve('public/images/', nextId + "_dp." + extension), function(err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log("Successful profile image upload!");
-                        }
-                    });
 
                     const imgPath = 'images/' + nextId + "_dp." + extension;
                     const userData = {
@@ -82,20 +75,24 @@ const authController = {
                         userType: "student" // temporary, set default value
                     };
 
-                    User.create(userData, (err, results) => {
+                    profilePicture.mv(path.resolve('public/images/', nextId + "_dp." + extension), function (err) {
                         if (err) {
                             console.log(err);
-                            return res.status(500).send("Database error");
+                            return res.status(500).send("File upload error");
                         }
-                        res.redirect('/');
-                    });
 
+                        User.create(userData, (err, results) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send("Database error");
+                            }
+                            res.redirect('/');
+                        });
+                    });
                 } else {
                     res.render("register", { title: "Register", msg: "Invalid Credentials" });
                 }
-
             });
-
         } catch (err) {
             console.log(err);
             res.status(500).send("Server error");
