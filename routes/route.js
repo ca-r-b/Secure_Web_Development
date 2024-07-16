@@ -5,13 +5,15 @@ const homeController = require("../controllers/homeController");
 const adminhomeController = require("../controllers/adminhomeController");
 
 // Auth routes
-router.get("/", authController.getLogin); // Ensure this route is defined
-router.post("/", authController.postLogin); // Ensure this route is defined
+router.get("/", authController.getLogin);
+router.post("/", authController.postLogin); 
 router.get('/register', authController.getRegister);
 router.post('/register', authController.postRegister);
 
 // Home route
 router.get("/home", homeController.getHome);
+router.post("/home", homeController.postHome); 
+
 router.get("/admin_home", adminhomeController.getAdminHome);
 
 // Logout route

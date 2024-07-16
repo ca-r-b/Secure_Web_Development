@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITSECWB - <%= title %></title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style.css">
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-
-    </title>
-</head>
-
-<body>
-    <div class="login-title">
-        <h1>Logged into to the ITSECWB System as: <%= session.user.firstName %> <%= session.user.lastName %> (<%= session.user.userType %>)</h1>
+  <body class="mainBody">
+    <div class = "userInfoContainer">       
+        <div class="dpGrid"> 
+          <img src= <%= session.user.picPath %>  width="200" height="200"/>
+        </div>
+        <div class="column">
+          <h1>
+            Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
+            ID Number: <%= session.user.idNumber %> (<%= session.user.userType %>)</br>
+          </h1>
+          <div>
+            <button id="logout-btn"><a href="/logout">Log Out</a></button>
+          </div>
+        </div>
     </div>
-    <img src=<%= session.user.picPath %> width="300" height="300"/>
-    <div>
-        <button id="logout-btn"><a href="/logout">Log Out</a></button>
-    </div>
-</body>
 
+    <div class = "mainContainer">
+      <form action="/home" method="post">
+          Post here:
+          <textarea 
+            placeholder="Whats on your mind?"
+            id="textareaInput" 
+            name="postInput"
+            rows="4"
+            cols="500"></textarea>
+          <div style = "display: flex; flex-direction: row-reverse;">
+            <button type="submit">Submit</button>
+          </div>
+      </form>
+    </div>
+
+    </hr>
+
+    <div class = "mainContainer">
+      input dito 
+    </div>
+
+  </body>
 </html>
