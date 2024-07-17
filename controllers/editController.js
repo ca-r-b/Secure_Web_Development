@@ -16,7 +16,6 @@ const editController = {
   postEdit: (req, res) => {
     try {
           const { editPhone } = req.body;
-          console.log('ang bading mo serik' + editPhone);
           const uid = req.session.user.id;
 
         
