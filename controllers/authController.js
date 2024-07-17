@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const path = require("path");
 const loginLimiter = require("../middleware/loginLimiter"); // Import the rate limiter
+const db = require("../db");
 
 const authController = {
   getLogin: (req, res) => {
@@ -36,6 +37,26 @@ const authController = {
             res.redirect('/admin_home'); // Redirect admin users to the admin page
         } else if (user.userType === 'student') {
             req.session.isLoggedIn = true;
+////////////////////////////////////
+            const sql = `
+            SELECT *
+            FROM posts p 
+            JOIN users u 
+            ON u.id = p.posterId 
+            `;
+
+            db.query(sql,  (err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Database error");
+                }
+                res.render("home", { 
+                    title: "Home", 
+                    session: req.session, 
+                    posts: results 
+                });
+            });
+///////////////////////////////////////
             res.redirect('/home'); // Redirect student users to the student page
         } else {
             res.status(403).send("Forbidden"); // Handle unexpected user types

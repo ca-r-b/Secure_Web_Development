@@ -1,11 +1,29 @@
 const Post = require("../models/Post");
-
+const db = require("../db");
 const homeController = {
     getHome: (req, res) => {
         try{
             if(req.session.isLoggedIn){
                 if(req.session.user.userType === "student") {
-                    res.render("home", { title: "Home", session: req.session });
+                    // res.render("home", { title: "Home", session: req.session });
+                    
+            const sql = `
+            SELECT *
+            FROM posts p 
+            JOIN users u 
+            ON u.id = p.posterId 
+            `;
+            db.query(sql,  (err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Database error");
+                }
+                res.render("home", { 
+                    title: "Home", 
+                    session: req.session, 
+                    posts: results 
+                });
+            });
                 } else{
                     res.redirect("/logout");
                 }
@@ -41,7 +59,25 @@ const homeController = {
                 return res.status(500).send("Database error");
                 } else{
                     console.log('Posted successfully');
-                    res.render("home", { title: "Home", session: req.session });
+                    
+            const sql = `
+            SELECT *
+            FROM posts p 
+            JOIN users u 
+            ON u.id = p.posterId 
+            `;
+
+            db.query(sql,  (err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Database error");
+                }
+                res.render("home", { 
+                    title: "Home", 
+                    session: req.session, 
+                    posts: results 
+                });
+            });
                 }
             });
        

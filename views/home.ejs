@@ -42,7 +42,17 @@
     </hr>
 
     <div class = "mainContainer">
-      input dito 
+            <% posts.forEach(post => { %>
+                <div class="postContainer">
+                  <img width="60" height="60" src=<%= post.picPath %>  />
+                    <div class="postContent"></br>
+                      <%= post.firstName %> <%= post.lastName %> </br>
+                      <p>
+                        <%= post.content %>
+                      </p>
+                    </div>
+                </div>
+            <% }); %>
     </div>
 
   </body>
