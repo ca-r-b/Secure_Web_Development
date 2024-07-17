@@ -15,47 +15,43 @@
         </div>
         <div class="column">
           <h1>
+            EDIT USER PAGE </br>
             Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
             ID Number: <%= session.user.idNumber %> (<%= session.user.userType %>)</br>
             Phone Number: <%= session.user.phoneNum %> </br>
           </h1>
           <div>
-            <button><a href="/edit">Edit</a></button>
+            <button><a href="/home">Back to Home</a></button>
             <button><a href="/logout">Log Out</a></button>
           </div>
         </div>
     </div>
 
+
     </hr>
       <div class = "mainContainer">
-        <form action="/home" method="post">
-            Post here:
-            <textarea 
-              placeholder="Whats on your mind?"
+        <form action="/edit" method="post">
+            Edit Phone Number:
+            <!-- <textarea 
+              placeholder="Input your phone number"
               id="textareaInput" 
               name="postInput"
               rows="4"
-              cols="500"></textarea>
+              cols="500"><%= session.user.phoneNum %></textarea> -->
+              
+              <input required name="editPhone" id="editPhone" type="text" placeholder="09*********" 
+              value=<%= session.user.phoneNum %>><br/>
+              <span id="edit-phone-error" style="color: red; display: none;">Enter a valid PH cellphone number</span>
+              <br/>
+
             <div style = "display: flex; flex-direction: row-reverse;">
-              <button type="submit">Submit</button>
+              <button id="edit-button" type="submit">Submit</button>
             </div>
         </form>
       </div>
     </hr>
 
-    <div class = "mainContainer">
-            <% posts.forEach(post => { %>
-                <div class="postContainer">
-                  <img width="60" height="60" src=<%= post.picPath %>  />
-                    <div class="postContent"></br>
-                      <%= post.firstName %> <%= post.lastName %> (<%= post.phoneNum %>) </br>
-                      <p>
-                        <%= post.content %>
-                      </p>
-                    </div>
-                </div>
-            <% }); %>
-    </div>
-
   </body>
+
+  <script src="/scripts/edit.js"></script>
 </html>

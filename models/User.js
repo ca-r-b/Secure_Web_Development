@@ -46,6 +46,16 @@ const User = {
     });
   },
 
+  updatePhoneNum: (userId, phoneNum, callback) => {
+    const sql = "UPDATE users SET phoneNum = ? WHERE id = ?";
+    db.query(sql, [phoneNum, userId], (err, results) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, results);
+    });
+  },
+
   checkForDuplicates: (email, phone, idnumber, callback) => {
     const sql =
       "SELECT * FROM users WHERE email = ? OR phoneNum = ? OR idNumber = ?";
