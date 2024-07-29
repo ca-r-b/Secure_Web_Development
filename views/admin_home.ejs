@@ -28,11 +28,26 @@
                 <div class="flex-row">
                     <img width="60" height="60" src=<%= user.picPath %>  />
                     
-                        <div class="postContent"></br>
-                        Name: <%= user.firstName %> <%= user.lastName %>  </br>
-                        Phone Number: <%= user.phoneNum %> </br>
-                        User Type: <%= user.userType %> </br>
-                        ID Number: <%= user.idNumber %> </br>
+                        <div class="postContent">
+                            <span style="font-weight: bold;">
+                            Name: 
+                            </span> 
+                            <%= user.firstName %> <%= user.lastName %>  </br>
+                    
+                            <span style="font-weight: bold;">
+                            ID Number: 
+                            </span> 
+                            <%= user.idNumber %> </br>
+                    
+                            <span style="font-weight: bold;">
+                            User Type: 
+                            </span> 
+                            <%= user.userType %> </br>
+                    
+                            <span style="font-weight: bold;">
+                            Phone Number: 
+                            </span>
+                            <%= user.phoneNum %> </br>
                         </div>
                     </div>
 

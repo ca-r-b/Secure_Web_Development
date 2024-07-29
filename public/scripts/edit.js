@@ -5,7 +5,7 @@ function validatePhoneNumber(phone) {
     return re.test(phone);
   }
 
-  document.getElementById("edit-phone").addEventListener("blur", function () {
+  document.getElementById("editPhone").addEventListener("blur", function () {
     var phoneInput = document.getElementById("editPhone");
     var phoneError = document.getElementById("edit-phone-error");
   console.log('aaaaaaaaaaa');

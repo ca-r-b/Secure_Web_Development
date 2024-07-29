@@ -5,10 +5,26 @@
     </div>
     <div class="column">
       <h1>
-        Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
-        ID Number: <%= session.user.idNumber %> </br>
-        User Type: <%= session.user.userType %> </br>
-        Phone Number: <%= session.user.phoneNum %> </br>
+        Name: 
+        <span style="font-weight: lighter;">
+          <%= session.user.firstName %> <%= session.user.lastName %>  </br>
+        </span> 
+
+        ID Number: 
+        <span style="font-weight: lighter;">
+          <%= session.user.idNumber %> </br>
+        </span> 
+
+        User Type: 
+        <span style="font-weight: lighter;">
+          <%= session.user.userType %> </br>
+        </span> 
+
+        Phone Number: 
+        <span style="font-weight: lighter;">
+          <%= session.user.phoneNum %> </br>
+        </span>
+         
       </h1>
       
     </div>
