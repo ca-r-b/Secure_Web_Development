@@ -70,12 +70,36 @@ img {
 #textareaInput{
     width: 100%;margin-top: 20px; margin-bottom: 20px
 }
+
 .postContainer {
-    
     display: flex;
     flex-direction: row;
     box-shadow: 0 3px 10px #5E6AB4;
+    justify-content: space-between;
     /* padding: 20px; */
     border-radius: 10px;
     margin: 20px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.button-1 {
+    background-color: transparent;
+    border-radius: 50%;
+    border: 2px solid #cccccc; /* Light border color */
+    width: 50px; /* Set the width */
+    height: 50px; /* Set the height to match the width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    transition: all .15s ease-in-out;
+    color: gray;
+}
+.postContainer:has(.button-1:hover) {
+    box-shadow: 0 0 10px 0 #00d7c3 inset, 0 0 20px 2px red;
+    border: 3px solid red;
 }

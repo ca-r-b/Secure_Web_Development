@@ -15,8 +15,6 @@ router.post('/register', authController.postRegister);
 router.get("/home", homeController.getHome);
 router.post("/home", homeController.postHome); 
 
-router.get("/admin_home", adminhomeController.getAdminHome);
-
 // Edit route
 router.get("/edit", editController.getEdit);
 router.post("/edit", editController.postEdit);
@@ -24,5 +22,9 @@ router.post("/edit", editController.postEdit);
 
 // Logout route
 router.get("/logout", homeController.getLogout);
+
+// Admin only routes
+router.get("/admin_home", adminhomeController.getAdminHome);
+router.get("/delete-post/:postID", adminhomeController.deletePost);
 
 module.exports = router;

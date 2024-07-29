@@ -1,32 +1,24 @@
 const Post = require("../models/Post");
 const db = require("../db");
+
 const homeController = {
     getHome: (req, res) => {
         try{
+            console.log('Session data:', req.session); 
             if(req.session.isLoggedIn){
-                if(req.session.user.userType === "student") {
-                    // res.render("home", { title: "Home", session: req.session });
-                    
-            const sql = `
-            SELECT *
-            FROM posts p 
-            JOIN users u 
-            ON u.id = p.posterId 
-            `;
-            db.query(sql,  (err, results) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database error");
-                }
-                res.render("home", { 
-                    title: "Home", 
-                    session: req.session, 
-                    posts: results 
-                });
-            });
-                } else{
-                    res.redirect("/logout");
-                }
+                Post.getPosts((err, results) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send("Database error");
+                        } else{
+                            res.render("home", { 
+                                title: "Home", 
+                                session: req.session, 
+                                posts: results 
+                            });
+                        }
+                    }
+                );
             } else {
                 res.redirect("/");
             }
@@ -39,12 +31,6 @@ const homeController = {
 
     postHome: (req, res) => {
         try {
-            // CREATE TABLE `secwbdb`.`posts` (
-            //     `id` INT NOT NULL,
-            //     `posterId` VARCHAR(36) NOT NULL,
-            //     `content` VARCHAR(250) NOT NULL,
-            //     PRIMARY KEY (`id`));
-
             const { postInput } = req.body;
             const posterId = req.session.user.id;
     
@@ -58,26 +44,19 @@ const homeController = {
                 console.log(err);
                 return res.status(500).send("Database error");
                 } else{
-                    console.log('Posted successfully');
-                    
-            const sql = `
-            SELECT *
-            FROM posts p 
-            JOIN users u 
-            ON u.id = p.posterId 
-            `;
-
-            db.query(sql,  (err, results) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database error");
-                }
-                res.render("home", { 
-                    title: "Home", 
-                    session: req.session, 
-                    posts: results 
-                });
-            });
+                    Post.getPosts((err, results) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send("Database error");
+                            } else{
+                                res.render("home", { 
+                                    title: "Home", 
+                                    session: req.session, 
+                                    posts: results 
+                                });
+                            }
+                        }
+                    );
                 }
             });
        
