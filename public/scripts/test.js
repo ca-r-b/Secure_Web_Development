@@ -1,3 +1,4 @@
+// MAINTAIN STICKY POSITION ON RELOAD
 document.addEventListener("DOMContentLoaded", function (event) {
   var scrollpos = sessionStorage.getItem('scrollpos');
   if (scrollpos) {
@@ -10,6 +11,8 @@ window.addEventListener("beforeunload", function (e) {
   sessionStorage.setItem('scrollpos', window.scrollY);
 });
 
+// ==========================================================================================================================================================//
+// VALIDATIONS
 document
   .getElementById("first-name")
   .addEventListener("blur", checkFormValidity);
