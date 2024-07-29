@@ -7,27 +7,17 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/style.css">
   </head>
+  
+  <%- include("partials/navbar") -%>
 
   <body class="mainBody">
-    <div class = "userInfoContainer">       
-        <div class="dpGrid"> 
-          <img src= <%= session.user.picPath %>  width="200" height="200"/>
-        </div>
-        <div class="column">
-          <h1>
-            EDIT USER PAGE </br>
-            Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
-            ID Number: <%= session.user.idNumber %> (<%= session.user.userType %>)</br>
-            Phone Number: <%= session.user.phoneNum %> </br>
-          </h1>
-          <div>
-            <button><a href="/home">Back to Home</a></button>
-            <button><a href="/logout">Log Out</a></button>
-          </div>
-        </div>
-    </div>
-
-
+    
+    <div class = "mainContainer" style="text-align: center;">
+      <h1><%= title %></h1>
+    </div>  
+  
+    <%- include("partials/user-card") -%>
+    
     </hr>
       <div class = "mainContainer">
         <form action="/edit" method="post">

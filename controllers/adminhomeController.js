@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 const db = require("../db");
 
 const adminhomeController = {
@@ -6,7 +7,16 @@ const adminhomeController = {
         try{
             if(req.session.isLoggedIn){
                 if(req.session.user.userType === "admin") {
-                    res.render("admin_home", { title: "Admin Home", session: req.session });
+                    
+                    User.getUsers((err, results) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send("Database error");
+                            } else{
+                                res.render("admin_home", { title: "Admin Home", session: req.session, users:  results });
+                            }
+                        }
+                    );
                 } else{
                     res.redirect("/logout");
                 }
@@ -14,7 +24,7 @@ const adminhomeController = {
                 res.redirect("/");
             }
         } catch(e){
-            console.log('Error (Admin)');
+            console.log('Error (Admin) Get Admin Home');
             res.redirect("/logout");
         }
     },

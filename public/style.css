@@ -33,7 +33,9 @@ body {
     align-items: center;
     margin: 0;
     overflow: auto;
-    padding: 5vh 5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    padding-bottom: 5vh;
 }
 
 .userInfoContainer {
@@ -102,4 +104,38 @@ img {
 .postContainer:has(.button-1:hover) {
     box-shadow: 0 0 10px 0 #00d7c3 inset, 0 0 20px 2px red;
     border: 3px solid red;
+}
+
+#navbar {
+    padding: 20px; /* Reduced padding for a sleeker look */
+    background-color: #5E6AB4;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+#navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    display: flex; /* Flexbox for better layout control */
+    justify-content: center; /* Center the items */
+}
+
+#navbar ul li {
+    margin: 0 10px; /* Add margin for spacing between items */
+}
+
+#navbar ul li a {
+    text-decoration: none;
+    padding: 10px 15px; /* Increased padding for better click area */
+    color: #fff;
+    background-color: transparent; /* Use transparent background initially */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    border-radius: 5px; /* Slightly round the corners for a modern look */
+}
+
+#navbar ul li a:hover {
+    color: #000;
+    background-color: #fff;
 }

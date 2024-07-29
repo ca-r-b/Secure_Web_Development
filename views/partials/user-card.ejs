@@ -1,0 +1,15 @@
+
+<div class = "userInfoContainer">       
+    <div class="dpGrid"> 
+      <img src= <%= session.user.picPath %>  width="200" height="200"/>
+    </div>
+    <div class="column">
+      <h1>
+        Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
+        ID Number: <%= session.user.idNumber %> </br>
+        User Type: <%= session.user.userType %> </br>
+        Phone Number: <%= session.user.phoneNum %> </br>
+      </h1>
+      
+    </div>
+</div>

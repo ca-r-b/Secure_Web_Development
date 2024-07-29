@@ -1,26 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITSECWB - <%= title %></title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
+  <%- include("partials/navbar") -%>
 
-    </title>
-</head>
 
-<body>
-    <div class="login-title">
-        <h1>ADMIN PAGE
-            <%= session.user.firstName %>
-                <%= session.user.lastName %> (
-                    <%= session.user.userType %>)</h1>
+  <body class="mainBody">
+
+    <div class = "mainContainer" style="text-align: center;">
+      <h1><%= title %></h1>
+    </div>  
+    <%- include("partials/user-card") -%>
+
+    </hr>
+
+    <div class = "mainContainer">
+        <% users.forEach(user => { %>
+        
+            <div class="postContainer">
+                <div class="flex-row">
+                    <img width="60" height="60" src=<%= user.picPath %>  />
+                    
+                        <div class="postContent"></br>
+                        Name: <%= user.firstName %> <%= user.lastName %>  </br>
+                        Phone Number: <%= user.phoneNum %> </br>
+                        User Type: <%= user.userType %> </br>
+                        ID Number: <%= user.idNumber %> </br>
+                        </div>
+                    </div>
+
+                    <a href="/delete-user/<%= user.id%>" style="text-decoration:none;">
+                        <div class="button-1">
+                        <i class="fa fa-trash"></i>
+                        </div>
+                    </a>
+
+                </div>
+        <% }); %>
     </div>
-    <img src=<%=session.user.picPath %> width="300" height="300"/>
-    <div>
-        <button id="logout-btn"><a href="/logout">Log Out</a></button>
-    </div>
-</body>
 
+  </body>
 </html>

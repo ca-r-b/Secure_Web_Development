@@ -9,7 +9,7 @@ const editController = {
     if (!req.session.isLoggedIn) {
       res.render("login", { title: "Login", msg: ""});
     } else { 
-        res.render("edit", { title: "Edits", session: req.session});
+        res.render("edit", { title: "Edit Details", session: req.session});
     }
   },
 

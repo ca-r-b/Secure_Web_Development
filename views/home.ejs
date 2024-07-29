@@ -9,23 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
 
+  <%- include("partials/navbar") -%>
+
   <body class="mainBody">
-    <div class = "userInfoContainer">       
-        <div class="dpGrid"> 
-          <img src= <%= session.user.picPath %>  width="200" height="200"/>
-        </div>
-        <div class="column">
-          <h1>
-            Name: <%= session.user.firstName %> <%= session.user.lastName %> </br>
-            ID Number: <%= session.user.idNumber %> (<%= session.user.userType %>)</br>
-            Phone Number: <%= session.user.phoneNum %> </br>
-          </h1>
-          <div>
-            <button><a href="/edit">Edit</a></button>
-            <button><a href="/logout">Log Out</a></button>
-          </div>
-        </div>
+
+    <div class = "mainContainer" style="text-align: center;">
+        <h1><%= title %></h1>
     </div>
+    
+    <%- include("partials/user-card") -%>
 
     </hr>
       <div class = "mainContainer">
@@ -45,7 +37,7 @@
     </hr>
 
     <div class = "mainContainer">
-            <% posts.forEach(post => { console.log(post) %>
+            <% posts.forEach(post => {  %>
               
               <div class="postContainer">
                <div class="flex-row">

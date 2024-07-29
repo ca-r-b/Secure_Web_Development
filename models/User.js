@@ -66,6 +66,22 @@ const User = {
       callback(null, results);
     });
   },
+
+  getUsers: (callback) => {
+    const sql = `
+      SELECT *
+      FROM users
+    `;
+
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.log(err);
+        return callback(err, null);
+      }
+      callback(null, results);
+    });
+  },
+
 };
 
 module.exports = User;
