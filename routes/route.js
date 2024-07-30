@@ -26,5 +26,6 @@ router.get("/logout", homeController.getLogout);
 // Admin only routes
 router.get("/admin_home", adminhomeController.getAdminHome);
 router.get("/delete-post/:postID", adminhomeController.deletePost);
+router.get("/delete-user/:userID", adminhomeController.deleteUser);
 
 module.exports = router;

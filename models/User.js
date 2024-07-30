@@ -82,6 +82,23 @@ const User = {
     });
   },
 
+  deleteUser: (userID, callback) => {
+    const sqlDeletePosts = "DELETE FROM posts WHERE posterId = ?"; // delete posts first
+    const sqlDeleteUser = "DELETE FROM users WHERE id = ?"; // then delete user
+  
+    db.query(sqlDeletePosts, [userID], (err, results) => {
+      if (err) {
+        return callback(err, null);
+      }
+      db.query(sqlDeleteUser, [userID], (err, results) => {
+        if (err) {
+          return callback(err, null);
+        }
+        callback(null, results);
+      });
+    });
+  },
+  
 };
 
 module.exports = User;
