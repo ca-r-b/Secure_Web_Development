@@ -14,7 +14,22 @@ const app = express();
 const port = 3000;
 
 // Use Helmet to set various HTTP headers for security
-app.use(helmet());
+app.use(helmet({
+  referrerPolicy: { policy: 'no-referrer' },
+  dnsPrefetchControl: { allow: false },
+  expectCt: { enforce: true, maxAge: 30 },
+  frameguard: { action: 'deny' }, // restricts who can put your site in a frame which can help mitigate things like clickjacking attacks.
+  hidePoweredBy: true, // Hide the X-Powered-By header
+  hsts: {
+    maxAge: 31536000, // 1 year in seconds
+    includeSubDomains: true,
+    preload: true,
+  },
+  ieNoOpen: true,
+  noSniff: true,
+  permittedCrossDomainPolicies: { policy: 'none' },
+  xssFilter: true,
+}));
 
 // Enable CORS for all routes (for development)
 const corsOptions = {
