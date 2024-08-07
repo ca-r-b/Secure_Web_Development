@@ -1,6 +1,5 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const errorHandler = require('../middleware/errorHandler');
 const db = require("../db");
 
 const adminhomeController = {
@@ -10,12 +9,9 @@ const adminhomeController = {
                 if (req.session.user.userType === "admin") {
 
                     User.getUsers((err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        } else {
-                            res.render("admin_home", { title: "Admin Home", session: req.session, users: results });
-                        }
+                        if (err) return next(err); 
+                        res.render("admin_home", { title: "Admin Home", session: req.session, users: results });
+                        
                     });
                 } else {
                     res.redirect("/logout");
@@ -24,8 +20,7 @@ const adminhomeController = {
                 res.redirect("/");
             }
         } catch (e) {
-            console.log('Error (Admin) Get Admin Home');
-            res.redirect("/logout");
+            next(err);
         }
     },
 
@@ -39,10 +34,7 @@ const adminhomeController = {
                     const postID = req.params.postID;
 
                     Post.deletePost(postID, (err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        }
+                        if (err) return next(err);
                         res.redirect('/home');
                     });
 
@@ -54,8 +46,7 @@ const adminhomeController = {
                 res.redirect("/");
             }
         } catch (e) {
-            console.log('Error (Admin) HERE');
-            res.redirect("/logout");
+            next(err);
         }
     },
 
@@ -70,10 +61,7 @@ const adminhomeController = {
                     const userID = req.params.userID;
 
                     User.deleteUser(userID, (err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        }
+                        if (err) return next(err);
                         res.redirect('/admin_home');
                     });
 
@@ -85,8 +73,7 @@ const adminhomeController = {
                 res.redirect("/");
             }
         } catch (e) {
-            console.log('Error (Admin) HERE');
-            res.redirect("/logout");
+            next(err);
         }
     },
 };
