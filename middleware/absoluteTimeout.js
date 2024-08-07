@@ -1,6 +1,6 @@
 const absoluteTimeout = (req, res, next) => {
-    const absoluteLimit = 10 * 1000; // 10 seconds for testing
-    console.log('Absolute Timeout Middleware executed'); // Log to ensure middleware execution
+    const absoluteLimit = 2 * 60 * 1000; // 2 minutes
+    console.log('Absolute Timeout Middleware executed');
 
     // Skip the timeout check for the logout route
     if (req.path === '/logout') {
@@ -17,7 +17,7 @@ const absoluteTimeout = (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.status(200).json({ message: 'Session expired due to absolute timeout.' });
+                res.status(200).json({ message: 'Your session has expired. Please login again. ' });
             });
         } else {
             next();
