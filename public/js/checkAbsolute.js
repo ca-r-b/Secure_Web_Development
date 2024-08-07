@@ -6,8 +6,8 @@ function checkSessionTimeout() {
             }
         }).then(response => response.json())
         .then(data => {
-            if (data.message === 'Session expired due to absolute timeout.') {
-                alert('Your session has expired due to absolute timeout.');
+            if (data.message === 'Your session has expired. Please login again.') {
+                alert(data.message);
                 window.location.href = '/logout';
             }
         }).catch(err => {
