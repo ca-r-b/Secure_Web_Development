@@ -1,67 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ITSECWB - <%= title %></title>
-    <!-- CSS -->
+    <title>ITSECWB -
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  </head>
+    <script src="/js/idleTimeout.js"></script>
+    <script src="/js/checkAbsolute.js"></script>
+</head>
 
-  <%- include("partials/navbar") -%>
+<%- include("partials/navbar") -%>
 
-  <body class="mainBody">
+    <body class="mainBody">
+        <div class="mainContainer" style="text-align: center;">
+            <h1>
+                <%= title %>
+            </h1>
+        </div>
 
-    <div class = "mainContainer" style="text-align: center;">
-        <h1><%= title %></h1>
-    </div>
-    
-    <%- include("partials/user-card") -%>
+        <%- include("partials/user-card") -%>
 
-    </hr>
-      <div class = "mainContainer">
-        <form action="/home" method="post">
-            Post here:
-            <textarea 
-              placeholder="Whats on your mind?"
-              id="textareaInput" 
-              name="postInput"
-              rows="4"
-              cols="500"></textarea>
-            <div style = "display: flex; flex-direction: row-reverse;">
-              <button type="submit">Submit</button>
+            <hr>
+            <div class="mainContainer">
+                <form action="/home" method="post">
+                    Post here:
+                    <textarea placeholder="Whats on your mind?" id="textareaInput" name="postInput" rows="4" cols="50"></textarea>
+                    <div style="display: flex; flex-direction: row-reverse;">
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
             </div>
-        </form>
-      </div>
-    </hr>
+            <hr>
 
-    <div class = "mainContainer">
-            <% posts.forEach(post => {  %>
-              
-              <div class="postContainer">
-               <div class="flex-row">
-                  <img width="60" height="60" src=<%= post.picPath %>  />
-                  
-                    <div class="postContent"></br>
-                      <%= post.firstName %> <%= post.lastName %> (<%= post.phoneNum %>) </br>
-                      <p>
-                        <%= post.content %>
-                      </p>
-                      
+            <div class="mainContainer">
+                <% posts.forEach(post => { %>
+                    <div class="postContainer">
+                        <div class="flex-row">
+                            <img width="60" height="60" src="<%= post.picPath %>" />
+                            <div class="postContent">
+                                <br>
+                                <%= post.firstName %>
+                                    <%= post.lastName %> (
+                                        <%= post.phoneNum %>)
+                                            <br>
+                                            <p>
+                                                <%= post.content %>
+                                            </p>
+                            </div>
+                        </div>
+                        <% if (session.user.userType === "admin") { %>
+                            <a href="/delete-post/<%= post.id %>" style="text-decoration:none;">
+                                <div class="button-1"><i class="fa fa-trash"></i></div>
+                            </a>
+                            <% } %>
                     </div>
-                </div>
-                <% if (session.user.userType === "admin") { %>
-                  <a href="/delete-post/<%= post.id%>" style="text-decoration:none;">
-                    <div class="button-1">
-                      <i class="fa fa-trash"></i>
-                    </div>
-                  </a>
-                <% } %>
+                    <% }); %>
+            </div>
+    </body>
 
-              </div>
-            <% }); %>
-    </div>
-
-  </body>
 </html>

@@ -1,65 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ITSECWB - <%= title %></title>
+    <title>ITSECWB -
+        <%= title %>
+    </title>
     <!-- CSS -->
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  </head>
+    <script src="/js/idleTimeout.js"></script>
+</head>
 
-  <%- include("partials/navbar") -%>
+<%- include("partials/navbar") -%>
 
 
-  <body class="mainBody">
+    <body class="mainBody">
 
-    <div class = "mainContainer" style="text-align: center;">
-      <h1><%= title %></h1>
-    </div>  
-    <%- include("partials/user-card") -%>
+        <div class="mainContainer" style="text-align: center;">
+            <h1>
+                <%= title %>
+            </h1>
+        </div>
+        <%- include("partials/user-card") -%>
 
-    </hr>
+            </hr>
 
-    <div class = "mainContainer">
-        <% users.forEach(user => { %>
-        
-            <div class="postContainer">
-                <div class="flex-row">
-                    <img width="60" height="60" src=<%= user.picPath %>  />
-                    
-                        <div class="postContent"> </br>
-                            <span style="font-weight: bold;">
+            <div class="mainContainer">
+                <% users.forEach(user => { %>
+
+                    <div class="postContainer">
+                        <div class="flex-row">
+                            <img width="60" height="60" src=<%=u ser.picPath %> />
+
+                            <div class="postContent">
+                                </br>
+                                <span style="font-weight: bold;">
                             Name: 
-                            </span> 
-                            <%= user.firstName %> <%= user.lastName %>  </br>
-                    
-                            <span style="font-weight: bold;">
+                            </span>
+                                <%= user.firstName %>
+                                    <%= user.lastName %>
+                                        </br>
+
+                                        <span style="font-weight: bold;">
                             ID Number: 
-                            </span> 
-                            <%= user.idNumber %> </br>
-                    
-                            <span style="font-weight: bold;">
+                            </span>
+                                        <%= user.idNumber %>
+                                            </br>
+
+                                            <span style="font-weight: bold;">
                             User Type: 
-                            </span> 
-                            <%= user.userType %> </br>
-                    
-                            <span style="font-weight: bold;">
+                            </span>
+                                            <%= user.userType %>
+                                                </br>
+
+                                                <span style="font-weight: bold;">
                             Phone Number: 
                             </span>
-                            <%= user.phoneNum %> </br>
+                                                <%= user.phoneNum %>
+                                                    </br>
+                            </div>
                         </div>
+
+                        <a href="/delete-user/<%= user.id%>" style="text-decoration:none;">
+                            <div class="button-1">
+                                <i class="fa fa-trash"></i>
+                            </div>
+                        </a>
+
                     </div>
+                    <% }); %>
+            </div>
 
-                    <a href="/delete-user/<%= user.id%>" style="text-decoration:none;">
-                        <div class="button-1">
-                        <i class="fa fa-trash"></i>
-                        </div>
-                    </a>
+    </body>
 
-                </div>
-        <% }); %>
-    </div>
-
-  </body>
 </html>

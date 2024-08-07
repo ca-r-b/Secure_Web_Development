@@ -9,7 +9,7 @@ const cors = require('cors');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const db = require('./db'); // Import the database connection
-
+const absoluteTimeout = require('./middleware/absoluteTimeout');
 const app = express();
 const port = 3000;
 const nocache = require("nocache");
@@ -43,7 +43,7 @@ app.use(cors(corsOptions));
 
 // Rate limiter middleware
 const loginLimiter = rateLimit({
-    windowMs: 3 * 60 * 1000, // 1 minute
+    windowMs: 3 * 60 * 1000, // 3 minutes
     max: 3, // Limit each IP to 3 login requests per windowMs
     message: "Too many login attempts, please try again after a minute",
     headers: true,
@@ -67,15 +67,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Session setup
 const sessionStore = new MySQLStore({}, db);
+
 app.use(session({
     key: 'session_cookie_name',
     secret: process.env.SESSION_SECRET,
     store: sessionStore,
     resave: false,
-    saveUninitialized: false,
-    isLoggedIn: false,
-    cookie: { secure: false } // Set to true if using https
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // 1 hour
 }));
+
+// Apply the absolute timeout middleware globally
+app.use(absoluteTimeout);
 
 // Route setup
 const router = require("./routes/route.js");

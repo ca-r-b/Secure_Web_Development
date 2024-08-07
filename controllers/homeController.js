@@ -1,29 +1,43 @@
 const Post = require("../models/Post");
 const db = require("../db");
+const winston = require('winston');
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.File({ filename: 'logfile.log' })
+    ]
+});
+
+// Log user session timeout
+function logSessionTimeout(userId, reason) {
+    logger.info('Session timeout', { userId, reason });
+}
+
 
 const homeController = {
     getHome: (req, res) => {
-        try{
-            console.log('Session data:', req.session); 
-            if(req.session.isLoggedIn){
+        try {
+            console.log('Session data:', req.session);
+            if (req.session.isLoggedIn) {
                 Post.getPosts((err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        } else{
-                            res.render("home", { 
-                                title: "Home", 
-                                session: req.session, 
-                                posts: results 
-                            });
-                        }
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send("Database error");
+                    } else {
+                        res.render("home", {
+                            title: "Home",
+                            session: req.session,
+                            posts: results
+                        });
                     }
-                );
+                });
             } else {
                 res.redirect("/");
             }
-            
-        } catch(e){
+
+        } catch (e) {
             console.log('Error (Student)');
             res.redirect("/logout");
         }
@@ -33,7 +47,7 @@ const homeController = {
         try {
             const { postInput } = req.body;
             const posterId = req.session.user.id;
-    
+
             const postData = {
                 posterId: posterId,
                 content: postInput
@@ -41,33 +55,34 @@ const homeController = {
 
             Post.create(postData, (err, results) => {
                 if (err) {
-                console.log(err);
-                return res.status(500).send("Database error");
-                } else{
+                    console.log(err);
+                    return res.status(500).send("Database error");
+                } else {
                     Post.getPosts((err, results) => {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send("Database error");
-                            } else{
-                                res.render("home", { 
-                                    title: "Home", 
-                                    session: req.session, 
-                                    posts: results 
-                                });
-                            }
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send("Database error");
+                        } else {
+                            res.render("home", {
+                                title: "Home",
+                                session: req.session,
+                                posts: results
+                            });
                         }
-                    );
+                    });
                 }
             });
-       
-            
-        } catch(e){
+
+
+        } catch (e) {
             console.log('Error POST post ' + e);
             res.redirect("/logout");
         }
     },
 
     getLogout: (req, res) => {
+        const userId = req.session.user ? req.session.user.id : 'unknown';
+        logSessionTimeout(userId, 'User initiated logout');
         req.session.isLoggedIn = false;
         req.session.destroy((err) => {
             if (err) {
