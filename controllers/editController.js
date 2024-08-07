@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const path = require("path");
 const loginLimiter = require("../middleware/loginLimiter"); // Import the rate limiter
-const errorHandler = require('../middleware/errorHandler');
 const db = require("../db");
 
 const editController = {
@@ -21,15 +20,12 @@ const editController = {
 
         
           User.updatePhoneNum(uid, editPhone, (err, results) => {
-            if (err) {
-              console.log(err);
-              return res.status(500).send("Database error");
-            }
+            if (err) return next(err);
             res.redirect('/home');
           });
           
       } catch(e){
-          console.log('Error POST edit ' + e);
+          next(e);
           res.redirect("/logout");
       }
   },
