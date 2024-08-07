@@ -1,6 +1,5 @@
 const mysql = require("mysql2");
 require('dotenv').config();
-const errorHandler = require('./middleware/errorHandler');
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,

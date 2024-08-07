@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const path = require("path");
 const loginLimiter = require("../middleware/loginLimiter");
-const errorHandler = require('../middleware/errorHandler');
 const db = require("../db");
 
 const authController = {
@@ -20,8 +19,7 @@ const authController = {
                 }
             }
         } catch (err) {
-            console.log(err);
-            res.status(500).send("Server error");
+            next(err);
         }
     },
 
@@ -66,8 +64,7 @@ const authController = {
                 }
             });
         } catch (err) {
-            console.log(err);
-            res.status(500).send("Server error");
+            next(err);
         }
     }],
 
@@ -75,8 +72,7 @@ const authController = {
         try {
             res.render("register", { title: "Register", msg: "" });
         } catch (err) {
-            console.log(err);
-            res.status(500).send("Server error");
+            next(err);
         }
     },
 
@@ -154,8 +150,7 @@ const authController = {
                 }
             });
         } catch (err) {
-            console.log(err);
-            res.status(500).send("Server error");
+            next(err);
         }
     },
 };

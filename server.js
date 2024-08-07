@@ -10,6 +10,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const db = require('./db'); // Import the database connection
 const absoluteTimeout = require('./middleware/absoluteTimeout');
+const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const port = 3000;
 const nocache = require("nocache");
@@ -79,6 +80,8 @@ app.use(session({
 
 // Apply the absolute timeout middleware globally
 app.use(absoluteTimeout);
+
+app.use(errorHandler);
 
 // Route setup
 const router = require("./routes/route.js");
