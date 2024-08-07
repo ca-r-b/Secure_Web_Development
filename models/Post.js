@@ -1,6 +1,7 @@
 
   
 const db = require("../db");
+const errorHandler = require('../middleware/errorHandler');
 
 const Post = {
 
