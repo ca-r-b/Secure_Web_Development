@@ -1,4 +1,5 @@
 const db = require("../db");
+const errorHandler = require('../middleware/errorHandler');
 
 const User = {
   findByEmail: (email, callback) => {
