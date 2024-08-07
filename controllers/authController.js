@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const path = require("path");
 const loginLimiter = require("../middleware/loginLimiter");
+const errorHandler = require('../middleware/errorHandler');
 const db = require("../db");
 
 const authController = {

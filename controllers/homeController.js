@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const db = require("../db");
 const winston = require('winston');
+const errorHandler = require('../middleware/errorHandler');
 
 const logger = winston.createLogger({
     level: 'info',

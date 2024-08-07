@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const errorHandler = require('../middleware/errorHandler');
 const db = require("../db");
 
 const adminhomeController = {
