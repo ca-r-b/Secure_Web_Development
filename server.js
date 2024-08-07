@@ -12,8 +12,11 @@ const db = require('./db'); // Import the database connection
 
 const app = express();
 const port = 3000;
+const nocache = require("nocache");
 
 // Use Helmet to set various HTTP headers for security
+app.use(nocache());
+
 app.use(helmet({
   referrerPolicy: { policy: 'no-referrer' },
   dnsPrefetchControl: { allow: false },
