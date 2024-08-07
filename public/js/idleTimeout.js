@@ -1,5 +1,5 @@
 let idleTime = 0;
-const idleLimit = 60 * 1000; // 60 seconds for testing
+const idleLimit = 2 * 60 * 1000; // 60 seconds for testing
 let isLoggedOut = false; // Flag to check if logout is already triggered
 
 const idleInterval = setInterval(timerIncrement, 1000); // 1 second
