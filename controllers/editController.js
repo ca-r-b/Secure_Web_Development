@@ -26,7 +26,6 @@ const editController = {
           
       } catch(e){
           next(e);
-          res.redirect("/logout");
       }
   },
 

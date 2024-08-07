@@ -1,7 +1,6 @@
 const Post = require("../models/Post");
 const db = require("../db");
 const winston = require('winston');
-const errorHandler = require('../middleware/errorHandler');
 
 const logger = winston.createLogger({
     level: 'info',
@@ -23,24 +22,20 @@ const homeController = {
             console.log('Session data:', req.session);
             if (req.session.isLoggedIn) {
                 Post.getPosts((err, results) => {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send("Database error");
-                    } else {
-                        res.render("home", {
-                            title: "Home",
-                            session: req.session,
-                            posts: results
-                        });
-                    }
+                    if (err) return next(err);  
+                    res.render("home", {
+                        title: "Home",
+                        session: req.session,
+                        posts: results
+                    });
+                    
                 });
             } else {
                 res.redirect("/");
             }
 
         } catch (e) {
-            console.log('Error (Student)');
-            res.redirect("/logout");
+            next(e); 
         }
     },
 
@@ -55,29 +50,22 @@ const homeController = {
             };
 
             Post.create(postData, (err, results) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database error");
-                } else {
-                    Post.getPosts((err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        } else {
-                            res.render("home", {
-                                title: "Home",
-                                session: req.session,
-                                posts: results
-                            });
-                        }
+                if (err) return next(err); 
+                Post.getPosts((err, results) => {
+                    if (err) return next(err); 
+                    res.render("home", {
+                        title: "Home",
+                        session: req.session,
+                        posts: results
                     });
-                }
+                    
+                });
+                
             });
 
 
         } catch (e) {
-            console.log('Error POST post ' + e);
-            res.redirect("/logout");
+            next(e);
         }
     },
 
@@ -86,10 +74,7 @@ const homeController = {
         logSessionTimeout(userId, 'User initiated logout');
         req.session.isLoggedIn = false;
         req.session.destroy((err) => {
-            if (err) {
-                console.log(err);
-                return res.redirect("/");
-            }
+            if (err) return next(err);
             res.clearCookie('session_cookie_name');
             res.redirect("/");
         });
