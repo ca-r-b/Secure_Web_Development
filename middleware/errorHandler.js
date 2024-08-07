@@ -1,6 +1,10 @@
 function errorHandler(err, req, res, next) {
     const isDebugMode = process.env.DEBUG === 'true';
 
+    if (err.status === 401 || err.code === 'AUTH_ERROR') {
+      return res.redirect('/logout');
+  }
+
     if (isDebugMode) {
         res.status(500).json({
           success: false,
