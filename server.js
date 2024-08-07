@@ -14,6 +14,7 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const port = 3000;
 const nocache = require("nocache");
+const logger = require('./middleware/logger');
 
 // Use Helmet to set various HTTP headers for security
 app.use(nocache());
@@ -55,6 +56,8 @@ const loginLimiter = rateLimit({
         });
     }
 });
+
+app.use(logger);
 
 // For Views
 app.set("view engine", "ejs");
