@@ -32,5 +32,8 @@
   "author": "",
   "license": "ISC"
 =======
+    "path": "^0.12.7",
+    "winston": "^3.13.1"
+  }
 >>>>>>> Stashed changes
 }
