@@ -81,11 +81,11 @@ app.use(session({
 // Apply the absolute timeout middleware globally
 app.use(absoluteTimeout);
 
-app.use(errorHandler);
-
 // Route setup
 const router = require("./routes/route.js");
 app.use("/", router);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
