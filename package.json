@@ -18,5 +18,16 @@
     "mysql2": "^3.10.0",
     "nocache": "^4.0.0",
     "path": "^0.12.7"
-  }
+  },
+  "name": "itsecwb",
+  "version": "1.0.0",
+  "description": "1. Make sure that all changes have been pushed to Origin.\r 2. Open a terminal under the project folder.\r 3. Enter this command: \"nodemon server.js\"",
+  "main": "db.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
 }
