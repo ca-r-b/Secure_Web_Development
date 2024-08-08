@@ -26,17 +26,26 @@ const nocache = require("nocache");
 // Use Helmet to set various HTTP headers for security
 app.use(nocache());
 
+app.use(
+    helmet.hsts({
+        // 60 days
+        maxAge: 86400,
+        // removing the "includeSubDomains" option
+        includeSubDomains: false,
+    })
+);
+
+app.use(
+    helmet.referrerPolicy({
+      policy: "no-referrer",
+    })
+)
+   
 app.use(helmet({
-    referrerPolicy: { policy: 'no-referrer' },
     dnsPrefetchControl: { allow: false },
     expectCt: { enforce: true, maxAge: 30 },
-    frameguard: { action: 'deny' }, // restricts who can put your site in a frame which can help mitigate things like clickjacking attacks.
+    frameguard: { action: 'deny' },
     hidePoweredBy: true, // Hide the X-Powered-By header
-    hsts: {
-        maxAge: 31536000, // 1 year in seconds
-        includeSubDomains: true,
-        preload: true,
-    },
     ieNoOpen: true,
     noSniff: true,
     permittedCrossDomainPolicies: { policy: 'none' },
@@ -101,5 +110,5 @@ const sslServer = https.createServer({
 }, app)
 
 sslServer.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at https://localhost:${port}`);
 });
