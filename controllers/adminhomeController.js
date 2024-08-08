@@ -15,8 +15,6 @@ const adminhomeController = {
         try {
             if (req.session.isLoggedIn) {
                 if (req.session.user.userType === "admin") {
-                    logAdminHomeAccess(req.session.user.id);
-
                     User.getUsers((err, results) => {
                         if (err) {
                             logAdminAccessAttempt(req.session.user.id, err);

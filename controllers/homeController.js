@@ -11,7 +11,6 @@ const homeController = {
         try {
             console.log('Session data:', req.session);
             if (req.session.isLoggedIn) {
-                logLoginSuccess(req.session.user.id);
                 Post.getPosts((err, results) => {
                     if (err) return next(err);
                     res.render("home", {
