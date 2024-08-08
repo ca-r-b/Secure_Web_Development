@@ -15,7 +15,6 @@ const User = {
     const sql = "INSERT INTO users SET ?";
     db.query(sql, userData, (err, results) => {
       if (err) {
-        console.log(err);
         return callback(err, null);
       }
       callback(null, results);
