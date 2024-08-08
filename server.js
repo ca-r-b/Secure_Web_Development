@@ -52,12 +52,12 @@ app.use(helmet({
     xssFilter: true,
 }));
 
-// Enable CORS for all routes (for development)
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+// // Enable CORS for all routes (for development)
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     optionsSuccessStatus: 200
+// };
+// app.use(cors(corsOptions));
 
 // Rate limiter middleware
 const loginLimiter = rateLimit({
