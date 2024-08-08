@@ -26,10 +26,7 @@ const authController = {
     postLogin: [loginLimiter, (req, res) => {
         try {
             User.findByEmail(req.body.email, (err, user) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database error");
-                }
+                if (err) return next(err);
                 if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
                     return res.render("login", { title: "Login", msg: "Wrong credentials." });
                 }
@@ -49,10 +46,7 @@ const authController = {
                         ON u.id = p.posterId 
                     `;
                     db.query(sql, (err, results) => {
-                        if (err) {
-                            console.log(err);
-                            return res.status(500).send("Database error");
-                        }
+                        if (err) return next(err);
                         res.render("home", {
                             title: "Home",
                             session: req.session,
@@ -82,10 +76,7 @@ const authController = {
             const profilePicture = req.files.profilePicture;
 
             User.checkForDuplicates(email, phone, idnumber, async(err, user) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database error");
-                }
+                if (err) return next(err);
 
                 if (user.length === 0) {
                     try {
@@ -105,33 +96,21 @@ const authController = {
                         };
 
                         User.create(userData, (err, results) => {
-                            if (err) {
-                                console.log(err);
-                                return res.status(500).send("Database error");
-                            }
+                            if (err) return next(err);
 
                             User.getIdByEmail(email, (err, uid) => {
-                                if (err) {
-                                    console.log(err);
-                                    return res.status(500).send("Database error");
-                                }
+                                if (err) return next(err);
 
                                 const extension = profilePicture.name.split(".").pop().toUpperCase();
                                 const imgPath = "images/" + uid + "_dp." + extension;
 
                                 User.updatePicPath(uid, imgPath, (err, results) => {
-                                    if (err) {
-                                        console.log(err);
-                                        return res.status(500).send("Database error");
-                                    }
+                                    if (err) return next(err);
 
                                     profilePicture.mv(
                                         path.resolve("public/images/", uid + "_dp." + extension),
                                         function(err) {
-                                            if (err) {
-                                                console.log(err);
-                                                return res.status(500).send("File upload error");
-                                            }
+                                            if (err) return next(err);
                                             res.redirect("/");
                                         }
                                     );
@@ -139,8 +118,7 @@ const authController = {
                             });
                         });
                     } catch (err) {
-                        console.log(err);
-                        res.status(500).send("Server error");
+                        next(err);
                     }
                 } else {
                     res.render("register", {
