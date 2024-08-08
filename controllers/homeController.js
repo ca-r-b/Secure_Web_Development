@@ -1,12 +1,17 @@
 const Post = require("../models/Post");
-const db = require("../db");
-const winston = require('winston');
+const {
+    logPostSubmitted,
+    logPostSubmissionError,
+    logLoginSuccess,
+    logSessionTimeout
+} = require('../utils/logger');
 
 const homeController = {
     getHome: (req, res) => {
         try {
             console.log('Session data:', req.session);
             if (req.session.isLoggedIn) {
+                logLoginSuccess(req.session.user.id);
                 Post.getPosts((err, results) => {
                     if (err) return next(err);
                     res.render("home", {
@@ -33,11 +38,14 @@ const homeController = {
                 content: postInput
             };
 
-            Post.create(postData, (err, results) => {
-                if (err) return next(err);
+            Post.create(postData, (err, result) => {
+                if (err) {
+                    logPostSubmissionError(posterId, err.message);
+                    return next(err);
+                }
+                logPostSubmitted(posterId, result.insertId);
                 Post.getPosts((err, results) => {
                     if (err) return next(err);
-                    // TODO: Add Logger
                     res.render("home", {
                         title: "Home",
                         session: req.session,
@@ -51,10 +59,11 @@ const homeController = {
     },
 
     getLogout: (req, res) => {
+        const userId = req.session.user ? req.session.user.id : 'unknown';
+        logSessionTimeout(userId, 'User initiated logout');
         req.session.isLoggedIn = false;
         req.session.destroy((err) => {
             if (err) return next(err);
-                        // TODO: Add Logger
             res.clearCookie('session_cookie_name');
             res.redirect("/");
         });

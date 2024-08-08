@@ -1,0 +1,16 @@
+{"level":"info","message":"Session timeout","reason":"User initiated logout","timestamp":"2024-08-08T15:52:19.343Z","userId":"6d008d14-5598-11ef-a7e9-84a93896a6a4"}
+{"level":"info","message":"Post submitted","postId":32,"timestamp":"2024-08-08T15:52:53.777Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Post submitted","postId":33,"timestamp":"2024-08-08T15:53:04.330Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Phone number edited","phoneNum":"09272966912","timestamp":"2024-08-08T16:00:22.291Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Login attempt success","timestamp":"2024-08-08T16:00:22.306Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Session timeout","reason":"User initiated logout","timestamp":"2024-08-08T16:03:01.856Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"email":"123123","level":"warn","message":"Login attempt failed","timestamp":"2024-08-08T16:08:44.200Z"}
+{"level":"info","message":"Login attempt successful","timestamp":"2024-08-08T16:08:58.697Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Post submitted successfully","postId":34,"timestamp":"2024-08-08T16:10:32.335Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Phone number edited","phoneNum":"09272966911","timestamp":"2024-08-08T16:10:42.878Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Login attempt successful","timestamp":"2024-08-08T16:10:42.890Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"User session timeout","reason":"User initiated logout","timestamp":"2024-08-08T16:10:47.947Z","userId":"405a19ac-559e-11ef-bb14-0a0027000012"}
+{"level":"info","message":"Login attempt successful","timestamp":"2024-08-08T16:11:03.243Z","userId":"6d008d14-5598-11ef-a7e9-84a93896a6a4"}
+{"level":"info","message":"Admin home accessed","timestamp":"2024-08-08T16:12:11.832Z","userId":"6d008d14-5598-11ef-a7e9-84a93896a6a4"}
+{"level":"info","message":"Login attempt successful","timestamp":"2024-08-08T16:12:40.977Z","userId":"6d008d14-5598-11ef-a7e9-84a93896a6a4"}
+{"level":"info","message":"User session timeout","reason":"User initiated logout","timestamp":"2024-08-08T16:12:43.445Z","userId":"6d008d14-5598-11ef-a7e9-84a93896a6a4"}

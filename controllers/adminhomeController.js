@@ -1,87 +1,99 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const db = require("../db");
+const {
+    logSessionTimeout,
+    logAdminAccessDenied,
+    logAdminHomeAccess,
+    logPostDeleted,
+    logUserDeleted,
+    logAdminAccessAttempt
+} = require('../utils/logger');
 
 const adminhomeController = {
-    getAdminHome: (req, res) => {
+    getAdminHome: (req, res, next) => {
         try {
             if (req.session.isLoggedIn) {
                 if (req.session.user.userType === "admin") {
+                    logAdminHomeAccess(req.session.user.id);
 
                     User.getUsers((err, results) => {
-                        if (err) return next(err); 
+                        if (err) {
+                            logAdminAccessAttempt(req.session.user.id, err);
+                            return next(err);
+                        }
                         res.render("admin_home", { title: "Admin Home", session: req.session, users: results });
-                        
                     });
                 } else {
-                                // TODO: Add Logger
+                    logAdminAccessDenied(req.session.user.id);
                     res.redirect("/logout");
                 }
             } else {
-                            // TODO: Add Logger
+                logSessionTimeout(req.session.user ? req.session.user.id : 'unknown', 'Session timeout or user not logged in');
                 res.redirect("/");
             }
         } catch (e) {
-            next(err);
+            next(e);
         }
     },
 
-    deletePost: function(req, res) {
+    deletePost: (req, res, next) => {
         try {
             console.log('Session data from delete post:', req.session);
-            // hjopw do i ensure that it is indeed getting req.session
+
             if (req.session.isLoggedIn) {
                 if (req.session.user.userType === "admin") {
-
                     const postID = req.params.postID;
 
                     Post.deletePost(postID, (err, results) => {
-                        if (err) return next(err);
-                        // TODO: Add Logger
+                        if (err) {
+                            logPostDeletionError(req.session.user.id, err);
+                            return next(err);
+                        }
+                        logPostDeleted(req.session.user.id, postID);
                         res.redirect('/home');
                     });
 
-
                 } else {
-                    // TODO: Add Logger
+                    logAdminAccessDenied(req.session.user.id);
                     res.redirect("/logout");
                 }
             } else {
-                // TODO: Add Logger
+                logSessionTimeout(req.session.user ? req.session.user.id : 'unknown', 'Session timeout or user not logged in');
                 res.redirect("/");
             }
         } catch (e) {
-            next(err);
+            next(e);
         }
     },
 
-
-    deleteUser: function(req, res) {
+    deleteUser: (req, res, next) => {
         try {
             console.log('Session data from delete user:', req.session);
-            // hjopw do i ensure that it is indeed getting req.session
+
             if (req.session.isLoggedIn) {
                 if (req.session.user.userType === "admin") {
-
                     const userID = req.params.userID;
 
                     User.deleteUser(userID, (err, results) => {
-                        if (err) return next(err);
-                        // TODO: Add Logger
+                        if (err) {
+                            logUserDeletionError(req.session.user.id, err);
+                            return next(err);
+                        }
+                        logUserDeleted(req.session.user.id, userID);
                         res.redirect('/admin_home');
                     });
 
-
                 } else {
-                    // TODO: Add Logger
+                    logAdminAccessDenied(req.session.user.id);
                     res.redirect("/logout");
                 }
             } else {
-                // TODO: Add Logger
+                logSessionTimeout(req.session.user ? req.session.user.id : 'unknown', 'Session timeout or user not logged in');
                 res.redirect("/");
             }
         } catch (e) {
-            next(err);
+            next(e);
         }
     },
 };

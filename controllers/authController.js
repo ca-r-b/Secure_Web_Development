@@ -3,17 +3,23 @@ const User = require("../models/User");
 const path = require("path");
 const loginLimiter = require("../middleware/loginLimiter");
 const db = require("../db");
+const {
+    logLoginSuccess,
+    logLoginFailed,
+    logAccountCreated,
+    logAccountEdited,
+    logProfilePictureUpload,
+    logProfilePictureUploadError
+} = require('../utils/logger');
 
 const authController = {
-    getLogin: (req, res) => {
+    getLogin: (req, res, next) => {
         try {
             if (!req.session.isLoggedIn) {
                 res.render("login", { title: "Login", msg: "" });
             } else {
                 if (req.session.user.userType === "admin") {
                     res.redirect("/admin_home");
-                } else if (req.session.user.userType === "student") {
-                    res.redirect("/home");
                 } else {
                     res.redirect("/home");
                 }
@@ -23,22 +29,24 @@ const authController = {
         }
     },
 
-    postLogin: [loginLimiter, (req, res) => {
+    postLogin: [loginLimiter, (req, res, next) => {
         try {
             User.findByEmail(req.body.email, (err, user) => {
-                if (err) return next(err);
+                if (err) {
+                    logLoginFailed(req.body.email); // Log failed login attempt due to database error
+                    return next(err);
+                }
                 if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
-                                // TODO: Add Logger
+                    logLoginFailed(req.body.email);
                     return res.render("login", { title: "Login", msg: "Wrong credentials." });
                 }
 
-                req.session.user = user; // Store user information in the session
+                req.session.user = user;
                 req.session.isLoggedIn = true;
-                req.session.startTime = Date.now(); // Set the session start time
-                console.log(`Login: StartTime set to ${req.session.startTime}`);
+                req.session.startTime = Date.now();
+                logLoginSuccess(user.id); // Log successful login
 
                 if (user.userType === 'admin') {
-                                // TODO: Add Logger
                     return res.redirect('/admin_home'); // Redirect admin users to the admin page
                 } else if (user.userType === 'student') {
                     const sql = `
@@ -48,8 +56,10 @@ const authController = {
                         ON u.id = p.posterId 
                     `;
                     db.query(sql, (err, results) => {
-                        if (err) return next(err);
-                                    // TODO: Add Logger
+                        if (err) {
+                            logLoginFailed(req.body.email);
+                            return next(err);
+                        }
                         res.render("home", {
                             title: "Home",
                             session: req.session,
@@ -57,8 +67,8 @@ const authController = {
                         });
                     });
                 } else {
-                                // TODO: Add Logger
-                    return res.status(403).send("Forbidden"); // Handle unexpected user types
+                    logLoginFailed(req.body.email);
+                    return res.status(403).send("Forbidden");
                 }
             });
         } catch (err) {
@@ -66,7 +76,7 @@ const authController = {
         }
     }],
 
-    getRegister: (req, res) => {
+    getRegister: (req, res, next) => {
         try {
             res.render("register", { title: "Register", msg: "" });
         } catch (err) {
@@ -74,7 +84,7 @@ const authController = {
         }
     },
 
-    postRegister: async(req, res) => {
+    postRegister: async(req, res, next) => {
         try {
             const { firstName, lastName, email, password1, phone, birthday, idnumber } = req.body;
             const profilePicture = req.files.profilePicture;
@@ -105,18 +115,25 @@ const authController = {
                             User.getIdByEmail(email, (err, uid) => {
                                 if (err) return next(err);
 
-                                            // TODO: Add Logger
+                                logAccountCreated(uid);
 
                                 const extension = profilePicture.name.split(".").pop().toUpperCase();
                                 const imgPath = "images/" + uid + "_dp." + extension;
 
                                 User.updatePicPath(uid, imgPath, (err, results) => {
-                                    if (err) return next(err);
+                                    if (err) {
+                                        logProfilePictureUploadError(uid, err);
+                                        return next(err);
+                                    }
 
                                     profilePicture.mv(
                                         path.resolve("public/images/", uid + "_dp." + extension),
                                         function(err) {
-                                            if (err) return next(err);
+                                            if (err) {
+                                                logProfilePictureUploadError(uid, err);
+                                                return next(err);
+                                            }
+                                            logProfilePictureUpload(uid, imgPath);
                                             res.redirect("/");
                                         }
                                     );
@@ -127,7 +144,7 @@ const authController = {
                         next(err);
                     }
                 } else {
-                                // TODO: Add Logger
+                    logAccountEdited(email);
                     res.render("register", {
                         title: "Register",
                         msg: "Invalid Credentials",
