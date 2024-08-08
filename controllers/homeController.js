@@ -2,40 +2,24 @@ const Post = require("../models/Post");
 const db = require("../db");
 const winston = require('winston');
 
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.File({ filename: 'logfile.log' })
-    ]
-});
-
-// Log user session timeout
-function logSessionTimeout(userId, reason) {
-    logger.info('Session timeout', { userId, reason });
-}
-
-
 const homeController = {
     getHome: (req, res) => {
         try {
             console.log('Session data:', req.session);
             if (req.session.isLoggedIn) {
                 Post.getPosts((err, results) => {
-                    if (err) return next(err);  
+                    if (err) return next(err);
                     res.render("home", {
                         title: "Home",
                         session: req.session,
                         posts: results
                     });
-                    
                 });
             } else {
                 res.redirect("/");
             }
-
         } catch (e) {
-            next(e); 
+            next(e);
         }
     },
 
@@ -50,28 +34,22 @@ const homeController = {
             };
 
             Post.create(postData, (err, results) => {
-                if (err) return next(err); 
+                if (err) return next(err);
                 Post.getPosts((err, results) => {
-                    if (err) return next(err); 
+                    if (err) return next(err);
                     res.render("home", {
                         title: "Home",
                         session: req.session,
                         posts: results
                     });
-                    
                 });
-                
             });
-
-
         } catch (e) {
             next(e);
         }
     },
 
     getLogout: (req, res) => {
-        const userId = req.session.user ? req.session.user.id : 'unknown';
-        logSessionTimeout(userId, 'User initiated logout');
         req.session.isLoggedIn = false;
         req.session.destroy((err) => {
             if (err) return next(err);

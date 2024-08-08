@@ -29,7 +29,6 @@ router.get("/delete-post/:postID", adminhomeController.deletePost);
 router.get("/delete-user/:userID", adminhomeController.deleteUser);
 
 // Timeout routes
-router.post('/log-session-timeout', timeoutController.logSessionTimeout);
 router.get('/check-session', timeoutController.checkSession);
 
 module.exports = router;

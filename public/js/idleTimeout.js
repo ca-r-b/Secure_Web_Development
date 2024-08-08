@@ -1,5 +1,5 @@
 let idleTime = 0;
-const idleLimit = 2 * 60 * 1000; // 2 minutes 
+const idleLimit = 2 * 60 * 1000; // 2 minutes
 let isLoggedOut = false; // Flag to check if logout is already triggered
 
 const idleInterval = setInterval(timerIncrement, 1000); // 1 second
@@ -18,6 +18,8 @@ function timerIncrement() {
         isLoggedOut = true; // Set flag to true
         clearInterval(idleInterval); // Stop the interval timer
         alert("You have been logged out due to inactivity.");
+
+        // Send a request to log the session timeout
         fetch('/log-session-timeout', {
             method: 'POST',
             headers: {
