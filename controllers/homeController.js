@@ -37,6 +37,7 @@ const homeController = {
                 if (err) return next(err);
                 Post.getPosts((err, results) => {
                     if (err) return next(err);
+                    // TODO: Add Logger
                     res.render("home", {
                         title: "Home",
                         session: req.session,
@@ -53,6 +54,7 @@ const homeController = {
         req.session.isLoggedIn = false;
         req.session.destroy((err) => {
             if (err) return next(err);
+                        // TODO: Add Logger
             res.clearCookie('session_cookie_name');
             res.redirect("/");
         });

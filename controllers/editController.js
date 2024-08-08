@@ -21,6 +21,7 @@ const editController = {
         
           User.updatePhoneNum(uid, editPhone, (err, results) => {
             if (err) return next(err);
+            // TODO: Add Logger
             res.redirect('/home');
           });
           

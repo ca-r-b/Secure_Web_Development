@@ -28,6 +28,7 @@ const authController = {
             User.findByEmail(req.body.email, (err, user) => {
                 if (err) return next(err);
                 if (!user || !bcrypt.compareSync(req.body.pass, user.password)) {
+                                // TODO: Add Logger
                     return res.render("login", { title: "Login", msg: "Wrong credentials." });
                 }
 
@@ -37,6 +38,7 @@ const authController = {
                 console.log(`Login: StartTime set to ${req.session.startTime}`);
 
                 if (user.userType === 'admin') {
+                                // TODO: Add Logger
                     return res.redirect('/admin_home'); // Redirect admin users to the admin page
                 } else if (user.userType === 'student') {
                     const sql = `
@@ -47,6 +49,7 @@ const authController = {
                     `;
                     db.query(sql, (err, results) => {
                         if (err) return next(err);
+                                    // TODO: Add Logger
                         res.render("home", {
                             title: "Home",
                             session: req.session,
@@ -54,6 +57,7 @@ const authController = {
                         });
                     });
                 } else {
+                                // TODO: Add Logger
                     return res.status(403).send("Forbidden"); // Handle unexpected user types
                 }
             });
@@ -101,6 +105,8 @@ const authController = {
                             User.getIdByEmail(email, (err, uid) => {
                                 if (err) return next(err);
 
+                                            // TODO: Add Logger
+
                                 const extension = profilePicture.name.split(".").pop().toUpperCase();
                                 const imgPath = "images/" + uid + "_dp." + extension;
 
@@ -121,6 +127,7 @@ const authController = {
                         next(err);
                     }
                 } else {
+                                // TODO: Add Logger
                     res.render("register", {
                         title: "Register",
                         msg: "Invalid Credentials",

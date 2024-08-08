@@ -14,9 +14,11 @@ const adminhomeController = {
                         
                     });
                 } else {
+                                // TODO: Add Logger
                     res.redirect("/logout");
                 }
             } else {
+                            // TODO: Add Logger
                 res.redirect("/");
             }
         } catch (e) {
@@ -35,14 +37,17 @@ const adminhomeController = {
 
                     Post.deletePost(postID, (err, results) => {
                         if (err) return next(err);
+                        // TODO: Add Logger
                         res.redirect('/home');
                     });
 
 
                 } else {
+                    // TODO: Add Logger
                     res.redirect("/logout");
                 }
             } else {
+                // TODO: Add Logger
                 res.redirect("/");
             }
         } catch (e) {
@@ -62,14 +67,17 @@ const adminhomeController = {
 
                     User.deleteUser(userID, (err, results) => {
                         if (err) return next(err);
+                        // TODO: Add Logger
                         res.redirect('/admin_home');
                     });
 
 
                 } else {
+                    // TODO: Add Logger
                     res.redirect("/logout");
                 }
             } else {
+                // TODO: Add Logger
                 res.redirect("/");
             }
         } catch (e) {
