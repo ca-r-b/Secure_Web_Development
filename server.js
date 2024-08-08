@@ -1,5 +1,10 @@
 require('dotenv').config();
 const express = require("express");
+
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
+
 const expressLayouts = require("express-ejs-layouts");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
@@ -12,7 +17,10 @@ const db = require('./db'); // Import the database connection
 const absoluteTimeout = require('./middleware/absoluteTimeout');
 const errorHandler = require('./middleware/errorHandler');
 const app = express();
-const port = 3000;
+
+// For changing
+const port = 3443;
+
 const nocache = require("nocache");
 
 // Use Helmet to set various HTTP headers for security
@@ -87,6 +95,11 @@ app.use("/", router);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
+const sslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+}, app)
+
+sslServer.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
