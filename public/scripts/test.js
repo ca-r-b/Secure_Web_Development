@@ -51,7 +51,6 @@ document
   .addEventListener("change", async function () {
     var pictureInput = document.getElementById("profile-picture");
     var pictureError = document.getElementById("picture-error");
-
     if (await validateFile(pictureInput)) {
       pictureError.style.display = "none";
     } else {
@@ -91,28 +90,28 @@ function validatePhoneNumber(phone) {
   return re.test(phone);
 }
 
-async function validateFile(file) {
-  const fileSignature = (buffer) => {
-    const header = buffer.slice(0, 4).toString("hex").toUpperCase();
-    switch (header) {
-      case "89504E47":
-        return "image/png";
-      case "FFD8FFE0":
-      case "FFD8FFE1":
-      case "FFD8FFE2":
-      case "FFD8FFE3":
-      case "FFD8FFE8":
-        return "image/jpeg";
-      default:
-        return "unknown";
-    }
-  };
+getFileSignature = (buffer) => {
+  const header = buffer.slice(0, 4).toString("hex").toUpperCase();
+  switch (header) {
+    case "89504E47":
+      return "image/png";
+    case "FFD8FFE0":
+    case "FFD8FFE1":
+    case "FFD8FFE2":
+    case "FFD8FFE3":
+    case "FFD8FFE8":
+      return "image/jpeg";
+    default:
+      return "unknown";
+  }
+};
 
+async function validateFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = function (e) {
       const buffer = new Uint8Array(e.target.result);
-      const fileType = fileSignature(buffer);
+      const fileType = getFileSignature(buffer);
       resolve(fileType !== "unknown");
     };
     reader.onerror = function () {

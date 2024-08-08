@@ -15,7 +15,6 @@
 
 <%- include("partials/navbar") -%>
 
-
     <body class="mainBody">
 
         <div class="mainContainer" style="text-align: center;">
@@ -25,45 +24,36 @@
         </div>
         <%- include("partials/user-card") -%>
 
-            </hr>
+            <hr>
+            <!-- Corrected this line -->
 
             <div class="mainContainer">
                 <% users.forEach(user => { %>
 
                     <div class="postContainer">
                         <div class="flex-row">
-                            <img width="60" height="60" src=<%=u ser.picPath %> />
+                            <img width="60" height="60" src="<%= user.picPath %>" />
+                            <!-- Corrected this line -->
 
                             <div class="postContent">
-                                </br>
-                                <span style="font-weight: bold;">
-                            Name: 
-                            </span>
+                                <br>
+                                <!-- Corrected tag -->
+                                <span style="font-weight: bold;">Name:</span>
                                 <%= user.firstName %>
-                                    <%= user.lastName %>
-                                        </br>
+                                    <%= user.lastName %> <br>
 
-                                        <span style="font-weight: bold;">
-                            ID Number: 
-                            </span>
-                                        <%= user.idNumber %>
-                                            </br>
+                                        <span style="font-weight: bold;">ID Number:</span>
+                                        <%= user.idNumber %> <br>
 
-                                            <span style="font-weight: bold;">
-                            User Type: 
-                            </span>
-                                            <%= user.userType %>
-                                                </br>
+                                            <span style="font-weight: bold;">User Type:</span>
+                                            <%= user.userType %> <br>
 
-                                                <span style="font-weight: bold;">
-                            Phone Number: 
-                            </span>
-                                                <%= user.phoneNum %>
-                                                    </br>
+                                                <span style="font-weight: bold;">Phone Number:</span>
+                                                <%= user.phoneNum %> <br>
                             </div>
                         </div>
 
-                        <a href="/delete-user/<%= user.id%>" style="text-decoration:none;">
+                        <a href="/delete-user/<%= user.id %>" style="text-decoration:none;">
                             <div class="button-1">
                                 <i class="fa fa-trash"></i>
                             </div>
